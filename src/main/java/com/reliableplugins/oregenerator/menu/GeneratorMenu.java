@@ -22,17 +22,16 @@ public class GeneratorMenu extends MenuBuilder {
 
     @Override
     public GeneratorMenu init() {
-
-        String title = plugin.getConfig().getString("");
-        List<String> lores = plugin.getConfig().getStringList("");
-
+        String title = plugin.getConfig().getString("generator-menu.item-name");
+        List<String> lores = plugin.getConfig().getStringList("generator-menu.item-lore");
         for (GeneratorItem generator : plugin.getGenerators()) {
             ItemStack itemStack = new ItemStack(generator.getMaterial());
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(Util.color(title.replace("%material%", generator.getMaterial().name())));
             itemMeta.setLore(Util.color(lores));
+            itemStack.setItemMeta(itemMeta);
+            getInventory().addItem(itemStack);
         }
-
         return this;
     }
 

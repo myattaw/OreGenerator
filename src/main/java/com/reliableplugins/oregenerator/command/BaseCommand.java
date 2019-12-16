@@ -2,6 +2,7 @@ package com.reliableplugins.oregenerator.command;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.command.impl.CommandAdd;
+import com.reliableplugins.oregenerator.command.impl.CommandEdit;
 import com.reliableplugins.oregenerator.command.impl.CommandHelp;
 import com.reliableplugins.oregenerator.util.Message;
 import org.bukkit.command.Command;
@@ -22,6 +23,7 @@ public class BaseCommand implements CommandExecutor {
         this.plugin = plugin;
         this.commandHelp = new CommandHelp(this);
         addCommand(new CommandAdd(), plugin);
+        addCommand(new CommandEdit(), plugin);
         plugin.getCommand("oregenerator").setExecutor(this);
 
     }

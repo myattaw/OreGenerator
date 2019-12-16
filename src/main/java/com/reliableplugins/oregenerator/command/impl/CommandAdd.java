@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 @CommandBuilder(label = "add", alias = {"a"}, permission = "oregenerator.add")
 public class CommandAdd extends AbstractCommand {
+
     @Override
     public void execute(CommandSender sender, String[] args) {
 
