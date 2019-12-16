@@ -68,6 +68,7 @@ public class GeneratorMenu extends MenuBuilder implements Listener {
     @Override
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        if(!event.getInventory().equals(this.inventory)) return;
         event.setCancelled(true);
 
         Player player = (Player) event.getWhoClicked();
@@ -108,6 +109,24 @@ public class GeneratorMenu extends MenuBuilder implements Listener {
     @Override
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
+        if(!event.getInventory().equals(this.inventory)) return;
+
+        Player player = (Player) event.getPlayer();
+        int sum = 0;
+        for(Map.Entry<Material, Integer> entry : generator.getPercents().entrySet())
+        {
+            sum += entry.getValue();
+        }
+
+        if(sum != 100)
+        {
+            // TODO: this event happens every time this is re-instantiated, make it only check for sum on final exit
+        }
+        else
+        {
+            player.sendMessage("Percentages saved");
+        }
+        InventoryClickEvent.getHandlerList().unregister(this);
 
     }
 
