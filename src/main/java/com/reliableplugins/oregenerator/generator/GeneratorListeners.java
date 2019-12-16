@@ -29,10 +29,15 @@ public class GeneratorListeners implements Listener {
             BlockFace blockFace = event.getFace();
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
 
-                block.setType(/*random*/Material.AIR);
+                // TODO: get generator based on player (below)
+                Generator generator = plugin.getGenerators().get(0);
 
-                //TODO map.put(Generator, location)
-                // the generator will be determined by the island owner
+                try {
+                    block.setType(generator.generateRandomMaterial());
+                }
+                catch(Exception e) {
+                    Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                }
 
                 event.setCancelled(true);
             }
