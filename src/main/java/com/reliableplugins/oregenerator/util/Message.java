@@ -4,6 +4,9 @@ import org.bukkit.ChatColor;
 
 public enum Message {
     LIST_GENERATORS(Util.color("&7Generators: {LIST}")),
+
+    ERROR_INVALID_GENERATOR(Util.color("&cInvalid generator")),
+    ERROR_NOT_ENOUGH_ARGS(Util.color("&cNot enough arguments; /oregenerator")),
     ERROR_PERMISSION(Util.color("&cNo permissions")),
     ERROR_NOT_PLAYER(Util.color("&cOnly players may execute this command"));
 

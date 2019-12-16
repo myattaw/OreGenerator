@@ -1,10 +1,10 @@
 package com.reliableplugins.oregenerator.generator;
 
-import com.reliableplugins.oregenerator.config.MaterialsConfig;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class Generator {
 
