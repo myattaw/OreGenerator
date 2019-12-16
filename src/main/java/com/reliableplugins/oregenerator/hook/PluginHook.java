@@ -6,6 +6,8 @@ public interface PluginHook<T> {
 
     T setup(OreGenerator plugin);
 
+    String[] getPlugins();
+
     String getName();
 
 }
