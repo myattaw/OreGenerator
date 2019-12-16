@@ -1,6 +1,7 @@
 package com.reliableplugins.oregenerator;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.reliableplugins.oregenerator.command.BaseCommand;
 import com.reliableplugins.oregenerator.generator.GeneratorItem;
 import com.reliableplugins.oregenerator.generator.GeneratorListeners;
 import com.reliableplugins.oregenerator.runnable.GeneratorTask;
@@ -21,6 +22,7 @@ public class OreGenerator extends JavaPlugin {
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new GeneratorTask(this), 20L, 20L);
+        new BaseCommand(this);
     }
 
     @Override
@@ -31,6 +33,7 @@ public class OreGenerator extends JavaPlugin {
     }
 
     public List<GeneratorItem> getGenerators() {
+
         return generators;
     }
 }

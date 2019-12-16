@@ -2,3 +2,7 @@ name: OreGenerator
 main: com.reliableplugins.oregenerator.OreGenerator
 version: 1.0
 author: Rages
+commands:
+  oregenerator:
+    description: "Oregenerator help command"
+    usage: "/oregenerator help"
