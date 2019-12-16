@@ -54,4 +54,8 @@ public class OreGenerator extends JavaPlugin {
     public List<Generator> getGenerators() {
         return generators;
     }
+
+    public MaterialsConfig getMaterialsConfig() {
+        return materialsConfig;
+    }
 }
