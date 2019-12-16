@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.reliableplugins</groupId>
+    <artifactId>OreGenerator</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1.8_R3</version>
+            <systemPath>${project.basedir}/lib/1.8.8.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc.</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1.11_R1</version>
+            <systemPath>${project.basedir}/lib/1.11.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc..</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1.12_R1</version>
+            <systemPath>${project.basedir}/lib/1.12.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc...</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1.13_R1</version>
+            <systemPath>${project.basedir}/lib/1.13.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc....</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1.13_R2</version>
+            <systemPath>${project.basedir}/lib/1.13.2.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc.....</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1.14.2</version>
+            <systemPath>${project.basedir}/lib/1.14.2.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sk89q.worldguard.</groupId>
+            <artifactId>worldguard-legacy</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-core</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+    </dependencies>
+
+</project>

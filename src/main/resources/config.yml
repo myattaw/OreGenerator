@@ -1,0 +1,12 @@
+# what worlds to disable lava generators
+disabled-worlds:
+  - "world_nether"
+
+generator-menu:
+  item-name: '&c%material%'
+  item-lore:
+    - '&7Modify the generators percent'
+    - '&7Current percent: &c%percent%%'
+    - ''
+    - '&7Left click to &c[-1]'
+    - '&7Right click to &a[+1]'
