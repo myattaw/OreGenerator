@@ -1,7 +1,7 @@
 package com.reliableplugins.oregenerator.menu;
 
 import com.reliableplugins.oregenerator.OreGenerator;
-import com.reliableplugins.oregenerator.generator.GeneratorItem;
+import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.util.Util;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -24,13 +24,13 @@ public class GeneratorMenu extends MenuBuilder {
     public GeneratorMenu init() {
         String title = plugin.getConfig().getString("generator-menu.item-name");
         List<String> lores = plugin.getConfig().getStringList("generator-menu.item-lore");
-        for (GeneratorItem generator : plugin.getGenerators()) {
-            ItemStack itemStack = new ItemStack(generator.getMaterial());
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setDisplayName(Util.color(title.replace("%material%", generator.getMaterial().name())));
-            itemMeta.setLore(Util.color(lores));
-            itemStack.setItemMeta(itemMeta);
-            getInventory().addItem(itemStack);
+        for (Generator generator : plugin.getGenerators()) {
+//            ItemStack itemStack = new ItemStack(generator.getMaterial());
+//            ItemMeta itemMeta = itemStack.getItemMeta();
+//            itemMeta.setDisplayName(Util.color(title.replace("%material%", generator.getMaterial().name())));
+//            itemMeta.setLore(Util.color(lores));
+//            itemStack.setItemMeta(itemMeta);
+//            getInventory().addItem(itemStack);
         }
         return this;
     }

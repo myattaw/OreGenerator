@@ -1,7 +1,7 @@
 package com.reliableplugins.oregenerator.runnable;
 
 import com.reliableplugins.oregenerator.OreGenerator;
-import com.reliableplugins.oregenerator.generator.GeneratorItem;
+import com.reliableplugins.oregenerator.generator.Generator;
 
 import java.util.Iterator;
 
@@ -18,8 +18,8 @@ public class GeneratorTask implements Runnable {
 
         if (plugin.getGenerators().size() == 0) return;
 
-        for (Iterator<GeneratorItem> iterator = plugin.getGenerators().iterator(); iterator.hasNext(); ) {
-            GeneratorItem generator = iterator.next();
+        for (Iterator<Generator> iterator = plugin.getGenerators().iterator(); iterator.hasNext(); ) {
+            Generator generator = iterator.next();
 //            if (generator.getTaskType() == GeneratorItem.TaskType.FINISHED) {
 //                iterator.remove();
 //                continue;

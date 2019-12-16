@@ -1,16 +1,18 @@
 package com.reliableplugins.oregenerator.generator;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.Material;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Generator {
 
-    private List<Generator> generators;
+    private Map<Material, Integer> percents;
     private String name;
 
     public Generator(String name) {
         this.name = name;
-        this.generators = new ArrayList<>();
+        this.percents = new HashMap<>();
     }
 
     public String getPermission() {
