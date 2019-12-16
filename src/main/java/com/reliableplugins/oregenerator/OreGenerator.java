@@ -2,7 +2,8 @@ package com.reliableplugins.oregenerator;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.reliableplugins.oregenerator.command.BaseCommand;
-import com.reliableplugins.oregenerator.generator.GeneratorItem;
+import com.reliableplugins.oregenerator.config.MaterialsConfig;
+import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.generator.GeneratorListeners;
 import com.reliableplugins.oregenerator.hook.HookManager;
 import com.reliableplugins.oregenerator.runnable.GeneratorTask;
@@ -16,9 +17,9 @@ import java.util.concurrent.Executors;
 public class OreGenerator extends JavaPlugin {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("OreGenerator Thread").build());
-    private List<GeneratorItem> generators = new ArrayList<>();
-
+    private List<Generator> generators = new ArrayList<>();
     private HookManager hookManager;
+    private MaterialsConfig materialsConfig;
 
     @Override
     public void onEnable() {
@@ -28,17 +29,25 @@ public class OreGenerator extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new GeneratorTask(this), 20L, 20L);
         new BaseCommand(this);
+
+        materialsConfig = new MaterialsConfig(this);
+        materialsConfig.load();
     }
 
     @Override
-    public void onDisable() { }
+    public void onDisable() {
+        materialsConfig.save();
+    }
 
     public HookManager getHookManager() {
         return hookManager;
     }
 
-    public List<GeneratorItem> getGenerators() {
+    public void setGenerators(List<Generator> generators) {
+        this.generators = generators;
+    }
 
+    public List<Generator> getGenerators() {
         return generators;
     }
 }
