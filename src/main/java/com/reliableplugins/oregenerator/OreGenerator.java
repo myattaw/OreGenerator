@@ -9,6 +9,7 @@ import com.reliableplugins.oregenerator.hook.HookManager;
 import com.reliableplugins.oregenerator.runnable.GeneratorTask;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -23,15 +24,18 @@ public class OreGenerator extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        this.saveDefaultConfig();
         this.hookManager = new HookManager(this);
 
         getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new GeneratorTask(this), 20L, 20L);
         new BaseCommand(this);
 
+        generators.add(new Generator("default"));
+        generators.add(new Generator("default2"));
         materialsConfig = new MaterialsConfig(this);
         materialsConfig.load();
+        materialsConfig.save();
     }
 
     @Override

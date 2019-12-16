@@ -13,10 +13,23 @@ public class Generator {
     public Generator(String name) {
         this.name = name;
         this.percents = new HashMap<>();
+        this.percents.put(Material.STONE, 100);
+    }
+
+    public void setPercents(Map<Material, Integer> percents) {
+        this.percents = percents;
     }
 
     public String getPermission() {
         return "oregenerator.use." + name;
+    }
+
+    public Map<Material, Integer> getPercents() {
+        return percents;
+    }
+
+    public String getName() {
+        return name;
     }
 
 }

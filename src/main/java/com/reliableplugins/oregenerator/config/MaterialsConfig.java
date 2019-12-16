@@ -9,11 +9,12 @@ import com.reliableplugins.oregenerator.generator.Generator;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
 public class MaterialsConfig {
-    private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().create();
+    private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private OreGenerator plugin;
 
     public MaterialsConfig(OreGenerator plugin)
@@ -26,7 +27,7 @@ public class MaterialsConfig {
             this.gson.toJson(plugin.getGenerators(), writer);
         }
         catch (IOException e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to save generator data!");
+            plugin.getLogger().log(Level.SEVERE, "Failed to save generator data!: " + e.getMessage());
         }
     }
 
@@ -36,7 +37,7 @@ public class MaterialsConfig {
                  plugin.setGenerators(new Gson().fromJson(reader, new TypeToken<List<Generator>>() {}.getType()));
             }
             catch (IOException e) {
-                plugin.getServer().getLogger().log(Level.SEVERE, "Failed to load generators.json!");
+                plugin.getServer().getLogger().log(Level.SEVERE, "Failed to load generators.json!: " + e.getMessage());
             }
         }
     }

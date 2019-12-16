@@ -28,9 +28,8 @@ public class GeneratorListeners implements Listener {
             Block block = event.getToBlock();
             BlockFace blockFace = event.getFace();
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
-//                    locations.add(block.getLocation());
 
-                Bukkit.broadcastMessage(plugin.getHookManager().getSkyBlock().getIslandOwner(block.getLocation()).toString());
+                block.setType(/*random*/Material.AIR);
 
                 //TODO map.put(Generator, location)
                 // the generator will be determined by the island owner
