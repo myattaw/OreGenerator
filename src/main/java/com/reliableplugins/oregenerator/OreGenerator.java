@@ -26,6 +26,9 @@ public class OreGenerator extends JavaPlugin {
     @Override
     public void onDisable() { }
 
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
 
     public List<GeneratorItem> getGenerators() {
         return generators;

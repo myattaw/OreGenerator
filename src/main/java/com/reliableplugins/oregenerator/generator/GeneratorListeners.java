@@ -23,14 +23,20 @@ public class GeneratorListeners implements Listener {
 
     @EventHandler
     public void onGenerator(BlockFromToEvent event) {
-        if (event.getToBlock().getType() == Material.AIR) {
-            Block block = event.getToBlock();
-            BlockFace blockFace = event.getFace();
-            if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
-                //locations.add(block.getLocation());
-                event.setCancelled(true);
+        plugin.getExecutorService().submit(() -> {
+            if (event.getToBlock().getType() == Material.AIR) {
+                Block block = event.getToBlock();
+                BlockFace blockFace = event.getFace();
+                if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
+//                    locations.add(block.getLocation());
+
+                    //TODO map.put(Generator, location)
+                    // the generator will be determined by the island owner
+
+                    event.setCancelled(true);
+                }
             }
-        }
+        });
     }
 
 }
