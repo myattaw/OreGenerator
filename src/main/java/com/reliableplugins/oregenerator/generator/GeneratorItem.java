@@ -6,10 +6,9 @@ import org.bukkit.Material;
 public class GeneratorItem {
 
     private Material material;
-    private int chance;
+    private int chance = 0;
 
     public GeneratorItem(Material material) {
-
         this.material = material;
     }
 
@@ -17,4 +16,7 @@ public class GeneratorItem {
         return material;
     }
 
+    public void setChance(int chance) {
+        this.chance = chance;
+    }
 }
