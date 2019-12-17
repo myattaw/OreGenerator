@@ -43,7 +43,7 @@ public class CommandHelp extends AbstractCommand {
 
             AbstractCommand command = commands[i];
 
-            TextComponent message = new TextComponent(Util.color(String.format(line, command.getLabel(), command.getDescription())));
+            TextComponent message = new TextComponent(Util.color(String.format(line, command.getLabel(), ChatColor.GREEN + command.getDescription())));
             message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + command.getPermission()).create()));
 
             if (player != null) {
