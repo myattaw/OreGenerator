@@ -41,6 +41,11 @@ public class Generator {
         this.percents.put(material, chance);
     }
 
+    public void removeItem(Material material)
+    {
+        this.percents.remove(material);
+    }
+
     public void setPercents(Map<Material, Integer> percents) {
         this.percents = percents;
     }

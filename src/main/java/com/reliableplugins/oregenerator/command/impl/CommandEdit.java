@@ -14,11 +14,17 @@ public class CommandEdit extends AbstractCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if(args.length != 1)
+        if(args.length < 1)
         {
             player.sendMessage(Message.ERROR_NOT_ENOUGH_ARGS.getMessage());
             return;
         }
+        else if(args.length > 1)
+        {
+            player.sendMessage(Message.ERROR_TOO_MANY_ARGS.getMessage());
+            return;
+        }
+
 
         for(Generator g : getPlugin().getGenerators()) {
             if(g.getName().equalsIgnoreCase(args[0]))

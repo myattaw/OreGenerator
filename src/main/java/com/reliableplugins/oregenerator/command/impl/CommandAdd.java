@@ -5,7 +5,9 @@ import com.reliableplugins.oregenerator.command.AbstractCommand;
 import com.reliableplugins.oregenerator.command.CommandBuilder;
 import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.util.Message;
+import com.reliableplugins.oregenerator.util.Util;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,12 +27,12 @@ public class CommandAdd extends AbstractCommand {
                 return;
             }
 
-            ItemStack toAdd = player.getItemInHand();
+           Material toAdd = player.getItemInHand().getType();
             int percent;
             switch(args.length) {
                 // Just add item with 0%
                 case 1:
-                    generator.addItem(toAdd.getType(), 0);
+                    generator.addItem(toAdd, 0);
                     break;
 
                 // Add item with given %
@@ -47,7 +49,8 @@ public class CommandAdd extends AbstractCommand {
                     // Percent too high
                     if(percent + generator.getPercentTotal() > 100)
                     {
-                        player.sendMessage(Message.ERROR_PCTG_HIGH.getMessage());
+                        player.sendMessage(Message.ERROR_PCTG_HIGH.getMessage()
+                                .replace("{MAX}", Integer.toString(100 - generator.getPercentTotal())));
                         return;
                     }
 
@@ -61,7 +64,10 @@ public class CommandAdd extends AbstractCommand {
                     // Good percent
                     else
                     {
-                        generator.addItem(toAdd.getType(), percent);
+                        generator.addItem(toAdd, percent);
+                        player.sendMessage(Message.MATERIAL_ADDED.getMessage()
+                                .replace("{MATERIAL}", Util.cleanName(toAdd))
+                                .replace("{PROBABILITY}", Integer.toString(percent)));
                     }
                     break;
 

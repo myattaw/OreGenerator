@@ -72,6 +72,8 @@ public class GeneratorMenu extends MenuBuilder {
         int chance = generator.getPercents().get(clickedMaterial);
 
         switch(event.getClick()) {
+
+            // Reduce pctg
             case LEFT:
                 if (getPercent() == 0) {
                     player.sendMessage(Message.ERROR_ALREADY_0.getMessage());
@@ -80,6 +82,7 @@ public class GeneratorMenu extends MenuBuilder {
                 chance--;
                 break;
 
+            // Increase pctg
             case RIGHT:
                 if (getPercent() == 100) {
                     player.sendMessage(Message.ERROR_ALREADY_100.getMessage());
@@ -87,6 +90,15 @@ public class GeneratorMenu extends MenuBuilder {
                 }
                 chance++;
                 break;
+
+            // Delete item
+            case MIDDLE:
+                generator.removeItem(clickedMaterial);
+                plugin.getMaterialsConfig().save();
+                plugin.getMaterialsConfig().load();
+                getInventory().clear();
+                player.openInventory(init().getInventory());
+                return;
 
             default:
                 break;
