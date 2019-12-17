@@ -1,6 +1,5 @@
 package com.reliableplugins.oregenerator.generator;
 
-import com.reliableplugins.oregenerator.config.MaterialsConfig;
 import org.bukkit.Material;
 
 import java.util.LinkedHashMap;
@@ -15,11 +14,6 @@ public class Generator {
     public Generator(String name) {
         this.name = name;
         this.percents = new LinkedHashMap<>();
-        addItem(Material.REDSTONE_ORE, 30);
-        addItem(Material.DIAMOND_ORE, 2);
-        addItem(Material.COAL_ORE, 3);
-        addItem(Material.STONE, 15);
-        addItem(Material.EMERALD_ORE, 50);
     }
 
     public Material generateRandomMaterial() {

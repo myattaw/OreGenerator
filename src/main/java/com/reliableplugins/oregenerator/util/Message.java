@@ -3,6 +3,7 @@ package com.reliableplugins.oregenerator.util;
 public enum Message {
     LIST_GENERATORS(Util.color("&7Generators: {LIST}")),
     MATERIAL_ADDED(Util.color("&7{MATERIAL} added with probability of {PROBABILITY}%")),
+    RELOADED(Util.color("&7Oregenerator has been reloaded")),
 
     ERROR_PCTG_INVALID(Util.color("&cInvalid percentage, enter a number")),
     ERROR_PCTG_HIGH(Util.color("&cThat percentage is too high (must be <= {MAX})")),

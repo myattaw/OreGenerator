@@ -31,7 +31,8 @@ public class GeneratorListeners implements Listener {
             BlockFace blockFace = event.getFace();
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
                 // TODO: get generator based on player (below)
-                Generator generator = plugin.getGenerators().get(0);
+                //Generator generator = plugin.generatorUtil.getGenerator(/*Playername*/)
+                Generator generator = plugin.getGenerators().get(1);
                 block.setType(generator.generateRandomMaterial());
                 block.getWorld().playSound(block.getLocation(), Sound.FIZZ, 1.0f, 2f);
                 event.setCancelled(true);
