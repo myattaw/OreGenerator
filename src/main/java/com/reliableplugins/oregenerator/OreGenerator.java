@@ -8,6 +8,7 @@ import com.reliableplugins.oregenerator.listeners.GeneratorListeners;
 import com.reliableplugins.oregenerator.hook.HookManager;
 import com.reliableplugins.oregenerator.listeners.InventoryListeners;
 import com.reliableplugins.oregenerator.runnable.GeneratorTask;
+import com.reliableplugins.oregenerator.util.GeneratorUtil;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class OreGenerator extends JavaPlugin {
     private List<Generator> generators = new ArrayList<>();
     private HookManager hookManager;
     private MaterialsConfig materialsConfig;
+    public final GeneratorUtil generatorUtil = new GeneratorUtil(this);
 
     @Override
     public void onEnable() {

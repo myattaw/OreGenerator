@@ -2,14 +2,10 @@ package com.reliableplugins.oregenerator.menu;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
+import com.reliableplugins.oregenerator.util.Message;
 import com.reliableplugins.oregenerator.util.Util;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -24,7 +20,6 @@ public class GeneratorMenu extends MenuBuilder {
 
     private OreGenerator plugin;
     private Generator generator;
-    private int percent = 100;
 
     public GeneratorMenu(OreGenerator plugin, Generator generator, String title, int rows) {
         super(title, rows, plugin);
@@ -78,19 +73,18 @@ public class GeneratorMenu extends MenuBuilder {
 
         switch(event.getClick()) {
             case LEFT:
-                if (percent == 0) {
+                if (getPercent() == 0) {
+                    player.sendMessage(Message.ERROR_ALREADY_0.getMessage());
                     return;
                 }
-                this.percent--;
                 chance--;
                 break;
 
             case RIGHT:
-                if (percent == 100) {
-                    player.sendMessage(ChatColor.RED + "You are already at 100%");
+                if (getPercent() == 100) {
+                    player.sendMessage(Message.ERROR_ALREADY_100.getMessage());
                     return;
                 }
-                this.percent++;
                 chance++;
                 break;
 
@@ -108,30 +102,24 @@ public class GeneratorMenu extends MenuBuilder {
             // Update inventory
             getInventory().clear();
             player.openInventory(init().getInventory());
-
-            // Kill this listener
         }
+    }
+
+
+
+    private int getPercent()
+    {
+        int percent = 0;
+        for(Map.Entry<Material, Integer> entry : generator.getPercents().entrySet())
+        {
+             percent += entry.getValue();
+        }
+        return percent;
     }
 
     @Override
     public void onInventoryClose(InventoryCloseEvent event) {
-        if(!event.getInventory().equals(this.inventory)) return;
 
-        Player player = (Player) event.getPlayer();
-        int sum = 0;
-        for(Map.Entry<Material, Integer> entry : generator.getPercents().entrySet())
-        {
-            sum += entry.getValue();
-        }
-
-        if(sum != 100)
-        {
-            // TODO: this event happens every time this is re-instantiated, make it only check for sum on final exit
-        }
-        else
-        {
-            player.sendMessage("Percentages saved");
-        }
     }
 
     @Override

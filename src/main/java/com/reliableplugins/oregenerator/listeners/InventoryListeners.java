@@ -33,5 +33,4 @@ public class InventoryListeners implements Listener {
             menuBuilder.onInventoryClose(event);
         }
     }
-
 }

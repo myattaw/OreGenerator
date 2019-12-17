@@ -1,5 +1,6 @@
 package com.reliableplugins.oregenerator.generator;
 
+import com.reliableplugins.oregenerator.config.MaterialsConfig;
 import org.bukkit.Material;
 
 import java.util.LinkedHashMap;
@@ -14,14 +15,14 @@ public class Generator {
     public Generator(String name) {
         this.name = name;
         this.percents = new LinkedHashMap<>();
-        this.percents.put(Material.REDSTONE_ORE, 30);
-        this.percents.put(Material.DIAMOND_ORE, 2);
-        this.percents.put(Material.COAL_ORE, 3);
-        this.percents.put(Material.STONE, 15);
-        this.percents.put(Material.EMERALD_ORE, 50);
+        addItem(Material.REDSTONE_ORE, 30);
+        addItem(Material.DIAMOND_ORE, 2);
+        addItem(Material.COAL_ORE, 3);
+        addItem(Material.STONE, 15);
+        addItem(Material.EMERALD_ORE, 50);
     }
 
-    public Material generateRandomMaterial() throws Exception {
+    public Material generateRandomMaterial() {
         Random rand = new Random();
         int randInt = rand.nextInt(100);
 
@@ -32,11 +33,26 @@ public class Generator {
             }
         }
 
-        throw new Exception("Invalid probability settings");
+        return Material.COBBLESTONE;
+    }
+
+    public void addItem(Material material, int chance)
+    {
+        this.percents.put(material, chance);
     }
 
     public void setPercents(Map<Material, Integer> percents) {
         this.percents = percents;
+    }
+
+    public int getPercentTotal()
+    {
+        int total = 0;
+        for(int i : percents.values())
+        {
+            total += i;
+        }
+        return total;
     }
 
     public String getPermission() {

@@ -8,7 +8,7 @@ import com.reliableplugins.oregenerator.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandBuilder(label = "edit", alias = {"e"}, permission = "oregenerator.edit", description = "gives a player a generator", playerRequired = true)
+@CommandBuilder(label = "edit", alias = {"e"}, permission = "oregenerator.edit", description = "Shows menu to edit generator properties", playerRequired = true)
 public class CommandEdit extends AbstractCommand {
 
     @Override

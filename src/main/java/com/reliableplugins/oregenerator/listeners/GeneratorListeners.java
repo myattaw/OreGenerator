@@ -32,14 +32,7 @@ public class GeneratorListeners implements Listener {
 
                 // TODO: get generator based on player (below)
                 Generator generator = plugin.getGenerators().get(0);
-
-                try {
-                    block.setType(generator.generateRandomMaterial());
-                }
-                catch(Exception e) {
-                    Bukkit.getConsoleSender().sendMessage(e.getMessage());
-                }
-
+                block.setType(generator.generateRandomMaterial());
                 event.setCancelled(true);
             }
         }

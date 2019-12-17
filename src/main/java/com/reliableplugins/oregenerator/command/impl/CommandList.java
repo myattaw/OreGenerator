@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-@CommandBuilder(label = "list", alias = {"l"}, permission = "oregenerator.list", description = "gives a player a generator")
+@CommandBuilder(label = "list", alias = {"l"}, permission = "oregenerator.list", description = "Shows list of generators")
 public class CommandList extends AbstractCommand {
 
     private OreGenerator plugin;

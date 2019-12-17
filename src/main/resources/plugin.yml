@@ -6,3 +6,4 @@ commands:
   oregenerator:
     description: "Oregenerator help command"
     usage: "/oregenerator help"
+    aliases: [oregen]
