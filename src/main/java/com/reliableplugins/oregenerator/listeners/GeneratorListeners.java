@@ -4,6 +4,7 @@ import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -29,10 +30,10 @@ public class GeneratorListeners implements Listener {
             Block block = event.getToBlock();
             BlockFace blockFace = event.getFace();
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
-
                 // TODO: get generator based on player (below)
                 Generator generator = plugin.getGenerators().get(0);
                 block.setType(generator.generateRandomMaterial());
+                block.getWorld().playSound(block.getLocation(), Sound.FIZZ, 1.0f, 2f);
                 event.setCancelled(true);
             }
         }
