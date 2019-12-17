@@ -1,6 +1,7 @@
-package com.reliableplugins.oregenerator.generator;
+package com.reliableplugins.oregenerator.listeners;
 
 import com.reliableplugins.oregenerator.OreGenerator;
+import com.reliableplugins.oregenerator.generator.Generator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

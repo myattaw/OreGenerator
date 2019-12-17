@@ -3,7 +3,7 @@ disabled-worlds:
   - "world_nether"
 
 generator-menu:
-  title: '&7Modify percentages'
+  title: '&7Modify percentages [%total-percent%]'
   item-name: '&c%material%'
   item-lore:
     - '&7Modify the generators percent'

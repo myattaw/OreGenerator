@@ -4,6 +4,7 @@ import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.util.Util;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,10 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class GeneratorMenu extends MenuBuilder implements Listener {
+public class GeneratorMenu extends MenuBuilder {
 
     private OreGenerator plugin;
     private Generator generator;
+    private int percent = 100;
 
     public GeneratorMenu(OreGenerator plugin, Generator generator, String title, int rows) {
         super(title, rows, plugin);
@@ -66,7 +68,6 @@ public class GeneratorMenu extends MenuBuilder implements Listener {
     }
 
     @Override
-    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if(!event.getInventory().equals(this.inventory)) return;
         event.setCancelled(true);
@@ -77,11 +78,20 @@ public class GeneratorMenu extends MenuBuilder implements Listener {
 
         switch(event.getClick()) {
             case LEFT:
-                chance = chance - 1;
+                if (percent == 0) {
+                    return;
+                }
+                this.percent--;
+                chance--;
                 break;
 
             case RIGHT:
-                chance = chance + 1;
+                if (percent == 100) {
+                    player.sendMessage(ChatColor.RED + "You are already at 100%");
+                    return;
+                }
+                this.percent++;
+                chance++;
                 break;
 
             default:
@@ -96,18 +106,14 @@ public class GeneratorMenu extends MenuBuilder implements Listener {
             plugin.getMaterialsConfig().save();
 
             // Update inventory
-            player.openInventory(new GeneratorMenu(plugin, generator,
-                    plugin.getConfig().getString("generator-menu.title"), 1)
-                    .init()
-                    .getInventory());
+            getInventory().clear();
+            player.openInventory(init().getInventory());
 
             // Kill this listener
-            InventoryClickEvent.getHandlerList().unregister(this);
         }
     }
 
     @Override
-    @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         if(!event.getInventory().equals(this.inventory)) return;
 
@@ -126,12 +132,9 @@ public class GeneratorMenu extends MenuBuilder implements Listener {
         {
             player.sendMessage("Percentages saved");
         }
-        InventoryClickEvent.getHandlerList().unregister(this);
-
     }
 
     @Override
-    @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
 
     }

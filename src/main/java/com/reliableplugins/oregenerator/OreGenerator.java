@@ -4,12 +4,12 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.reliableplugins.oregenerator.command.BaseCommand;
 import com.reliableplugins.oregenerator.config.MaterialsConfig;
 import com.reliableplugins.oregenerator.generator.Generator;
-import com.reliableplugins.oregenerator.generator.GeneratorListeners;
+import com.reliableplugins.oregenerator.listeners.GeneratorListeners;
 import com.reliableplugins.oregenerator.hook.HookManager;
+import com.reliableplugins.oregenerator.listeners.InventoryListeners;
 import com.reliableplugins.oregenerator.runnable.GeneratorTask;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -28,6 +28,7 @@ public class OreGenerator extends JavaPlugin {
         this.hookManager = new HookManager(this);
 
         getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
+        getServer().getPluginManager().registerEvents(new InventoryListeners(), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new GeneratorTask(this), 20L, 20L);
         new BaseCommand(this);
 
