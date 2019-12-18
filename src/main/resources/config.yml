@@ -4,6 +4,7 @@ disabled-worlds:
 
 generator-menu:
   title: '&8Modify percentages'
+  blank: ''
   item-name: '&c%material%'
   item-lore:
     - '&7Modify the generator''s percent'

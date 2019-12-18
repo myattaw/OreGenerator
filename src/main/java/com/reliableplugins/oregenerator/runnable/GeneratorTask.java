@@ -18,7 +18,7 @@ public class GeneratorTask implements Runnable {
 
         if (plugin.getGenerators().size() == 0) return;
 
-        for (Iterator<Generator> iterator = plugin.getGenerators().iterator(); iterator.hasNext(); ) {
+        for (Iterator<Generator> iterator = plugin.getGenerators().values().iterator(); iterator.hasNext(); ) {
             Generator generator = iterator.next();
 //            if (generator.getTaskType() == GeneratorItem.TaskType.FINISHED) {
 //                iterator.remove();

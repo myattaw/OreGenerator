@@ -4,25 +4,25 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.reliableplugins.oregenerator.command.BaseCommand;
 import com.reliableplugins.oregenerator.config.MaterialsConfig;
 import com.reliableplugins.oregenerator.generator.Generator;
-import com.reliableplugins.oregenerator.listeners.GeneratorListeners;
 import com.reliableplugins.oregenerator.hook.HookManager;
+import com.reliableplugins.oregenerator.listeners.GeneratorListeners;
 import com.reliableplugins.oregenerator.listeners.InventoryListeners;
 import com.reliableplugins.oregenerator.runnable.GeneratorTask;
-import com.reliableplugins.oregenerator.util.GeneratorUtil;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class OreGenerator extends JavaPlugin {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("OreGenerator Thread").build());
-    private List<Generator> generators = new ArrayList<>();
+
+    private Map<String, Generator> generators = new HashMap<>();
+
     private HookManager hookManager;
     private MaterialsConfig materialsConfig;
-    public final GeneratorUtil generatorUtil = new GeneratorUtil(this);
 
     @Override
     public void onEnable() {
@@ -32,10 +32,11 @@ public class OreGenerator extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
         getServer().getPluginManager().registerEvents(new InventoryListeners(), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new GeneratorTask(this), 20L, 20L);
+
         new BaseCommand(this);
 
-        generators.add(new Generator("default"));
-        generators.add(new Generator("default2"));
+        generators.put("default", new Generator("default"));
+
         materialsConfig = new MaterialsConfig(this);
         materialsConfig.load();
         materialsConfig.save();
@@ -50,12 +51,16 @@ public class OreGenerator extends JavaPlugin {
         return hookManager;
     }
 
-    public void setGenerators(List<Generator> generators) {
+    public Map<String, Generator> getGenerators() {
+        return generators;
+    }
+
+    public void setGenerators(Map<String, Generator> generators) {
         this.generators = generators;
     }
 
-    public List<Generator> getGenerators() {
-        return generators;
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 
     public MaterialsConfig getMaterialsConfig() {

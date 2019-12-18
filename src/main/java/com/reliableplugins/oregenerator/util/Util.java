@@ -2,6 +2,8 @@ package com.reliableplugins.oregenerator.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,13 @@ public class Util {
             colored.add(color(line));
         }
         return colored;
+    }
+
+    public static ItemStack setName(ItemStack itemStack, String name) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(color(name));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     public static String cleanName(Material material) {

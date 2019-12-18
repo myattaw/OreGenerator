@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,12 @@ public abstract class MenuBuilder<T> implements InventoryHolder {
         this.rows = rows;
         this.inventory = Bukkit.createInventory(this, 9 * rows, getTitle());
     }
+
+    public MenuBuilder(String title, JavaPlugin plugin) {
+        this.title = title;
+        this.inventory = Bukkit.createInventory(this, InventoryType.HOPPER, getTitle());
+    }
+
 
     public String getTitle() {
         return ChatColor.translateAlternateColorCodes('&', title);

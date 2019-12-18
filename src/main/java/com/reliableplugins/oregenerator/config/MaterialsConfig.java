@@ -10,6 +10,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class MaterialsConfig {
@@ -33,7 +34,7 @@ public class MaterialsConfig {
     public void load() {
         if (Files.isReadable(Paths.get(plugin.getDataFolder() + File.separator + "generators.json"))) {
             try (Reader reader = new FileReader(plugin.getDataFolder() + File.separator + "generators.json")) {
-                 plugin.setGenerators(new Gson().fromJson(reader, new TypeToken<List<Generator>>() {}.getType()));
+                 plugin.setGenerators(new Gson().fromJson(reader, new TypeToken<Map<String, Generator>>() {}.getType()));
             }
             catch (IOException e) {
                 plugin.getServer().getLogger().log(Level.SEVERE, "Failed to load generators.json!: " + e.getMessage());

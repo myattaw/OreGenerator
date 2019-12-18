@@ -14,6 +14,7 @@ public class Generator {
     public Generator(String name) {
         this.name = name;
         this.percents = new LinkedHashMap<>();
+        this.percents.put(Material.STONE, 100);
     }
 
     public Material generateRandomMaterial() {

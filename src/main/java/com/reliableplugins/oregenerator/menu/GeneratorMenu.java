@@ -4,6 +4,7 @@ import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.util.Message;
 import com.reliableplugins.oregenerator.util.Util;
+import com.reliableplugins.oregenerator.util.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -31,6 +32,7 @@ public class GeneratorMenu extends MenuBuilder {
     public GeneratorMenu init() {
         String title = plugin.getConfig().getString("generator-menu.item-name");
         List<String> lores = plugin.getConfig().getStringList("generator-menu.item-lore");
+
         int index = 0;
 
         for(String s : lores)
@@ -59,6 +61,15 @@ public class GeneratorMenu extends MenuBuilder {
             itemStack.setItemMeta(itemMeta);
             getInventory().addItem(itemStack);
         }
+
+        ItemStack itemStack = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
+
+        for (int i = 0; i < getInventory().getSize(); i++) {
+            if (getInventory().getItem(i) == null) {
+                getInventory().setItem(i, itemStack);
+            }
+        }
+
         return this;
     }
 

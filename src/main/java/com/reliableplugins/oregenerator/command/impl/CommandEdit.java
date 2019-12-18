@@ -14,28 +14,18 @@ public class CommandEdit extends AbstractCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if(args.length < 1)
-        {
-            player.sendMessage(Message.ERROR_NOT_ENOUGH_ARGS.getMessage());
-            return;
-        }
-        else if(args.length > 1)
-        {
-            player.sendMessage(Message.ERROR_TOO_MANY_ARGS.getMessage());
-            return;
-        }
 
+        Generator generator = getPlugin().getGenerators().get("default");
 
-        for(Generator g : getPlugin().getGenerators()) {
-            if(g.getName().equalsIgnoreCase(args[0]))
-            {
-                player.openInventory(new GeneratorMenu(getPlugin(), g,
-                        getPlugin().getConfig().getString("generator-menu.title"), 1)
-                        .init()
-                        .getInventory());
+        if (args.length != 0) {
+            if (getPlugin().getGenerators().containsKey(args[0].toLowerCase())) {
+                generator = getPlugin().getGenerators().get(args[0]);
+            } else {
+                player.sendMessage(Message.ERROR_INVALID_GENERATOR.getMessage());
                 return;
             }
         }
-        player.sendMessage(Message.ERROR_INVALID_GENERATOR.getMessage());
+
+        player.openInventory(new GeneratorMenu(getPlugin(), generator, getPlugin().getConfig().getString("generator-menu.title"), 1).init().getInventory());
     }
 }
