@@ -28,4 +28,11 @@ public class Util {
         return itemStack;
     }
 
+    public static ItemStack setLore(ItemStack itemStack, List<String> lore) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
 }

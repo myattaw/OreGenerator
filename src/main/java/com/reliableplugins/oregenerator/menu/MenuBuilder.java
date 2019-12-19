@@ -15,6 +15,7 @@ public abstract class MenuBuilder<T> implements InventoryHolder {
     public Inventory inventory;
     private String title;
     private int rows;
+    public final int ROW_SIZE = 9;
 
     public MenuBuilder(String title, int rows, JavaPlugin plugin) {
         this.title = title;
