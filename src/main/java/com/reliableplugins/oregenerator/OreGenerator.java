@@ -7,6 +7,8 @@ import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.hook.HookManager;
 import com.reliableplugins.oregenerator.listeners.GeneratorListeners;
 import com.reliableplugins.oregenerator.listeners.InventoryListeners;
+import com.reliableplugins.oregenerator.nms.NMSHandler;
+import com.reliableplugins.oregenerator.nms.NMSManager;
 import com.reliableplugins.oregenerator.runnable.GeneratorTask;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,12 +24,15 @@ public class OreGenerator extends JavaPlugin {
     private Map<String, Generator> generators = new HashMap<>();
 
     private HookManager hookManager;
+    private NMSManager nmsManager;
     private MaterialsConfig materialsConfig;
+    private NMSHandler nmsHandler;
 
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
         this.hookManager = new HookManager(this);
+        this.nmsManager = new NMSManager(this);
 
         getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
         getServer().getPluginManager().registerEvents(new InventoryListeners(), this);
@@ -49,6 +54,18 @@ public class OreGenerator extends JavaPlugin {
 
     public HookManager getHookManager() {
         return hookManager;
+    }
+
+    public NMSManager getNmsManager() {
+        return nmsManager;
+    }
+
+    public NMSHandler getNMS() {
+        return nmsHandler;
+    }
+
+    public void setNMS(NMSHandler nmsHandler) {
+        this.nmsHandler = nmsHandler;
     }
 
     public Map<String, Generator> getGenerators() {

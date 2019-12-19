@@ -3,8 +3,9 @@ package com.reliableplugins.oregenerator.command.impl;
 import com.reliableplugins.oregenerator.command.AbstractCommand;
 import com.reliableplugins.oregenerator.command.CommandBuilder;
 import com.reliableplugins.oregenerator.generator.Generator;
-import com.reliableplugins.oregenerator.menu.GeneratorMenu;
+import com.reliableplugins.oregenerator.menu.ProbabilityMenu;
 import com.reliableplugins.oregenerator.util.Message;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,6 +27,8 @@ public class CommandEdit extends AbstractCommand {
             }
         }
 
-        player.openInventory(new GeneratorMenu(getPlugin(), generator, getPlugin().getConfig().getString("generator-menu.title"), 1).init().getInventory());
+        player.openInventory(new ProbabilityMenu("this", Material.COBBLESTONE, getPlugin()).init().getInventory());
+
+//        player.openInventory(new GeneratorMenu(getPlugin(), generator, getPlugin().getConfig().getString("generator-menu.title"), 1).init().getInventory());
     }
 }

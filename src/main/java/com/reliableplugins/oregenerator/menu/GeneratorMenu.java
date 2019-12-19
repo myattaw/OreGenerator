@@ -41,7 +41,7 @@ public class GeneratorMenu extends MenuBuilder {
             index++;
         }
 
-        for(Map.Entry<Material, Integer> entry : generator.getPercents().entrySet())
+        for(Map.Entry<Material, Integer> entry : generator.getItems().entrySet())
         {
             ItemStack itemStack = new ItemStack(entry.getKey());
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -53,7 +53,7 @@ public class GeneratorMenu extends MenuBuilder {
             itemMeta.setLore(Util.color(itemLores));
 
             // Set name
-            String itemName = Util.cleanName(entry.getKey());
+            String itemName = plugin.getNMS().getItemName(itemStack);
             itemName = Util.color(title.replace("%material%", itemName));
             itemMeta.setDisplayName(itemName);
 
@@ -80,7 +80,7 @@ public class GeneratorMenu extends MenuBuilder {
 
         Player player = (Player) event.getWhoClicked();
         Material clickedMaterial = event.getCurrentItem().getType();
-        int chance = generator.getPercents().get(clickedMaterial);
+        int chance = generator.getItems().get(clickedMaterial);
 
         switch(event.getClick()) {
 
@@ -117,7 +117,7 @@ public class GeneratorMenu extends MenuBuilder {
 
         // If chance is between 0 and 100 inclusive, update chance
         if(chance >= 0 && chance <= 100) {
-            generator.getPercents().put(clickedMaterial, chance);
+            generator.getItems().put(clickedMaterial, chance);
 
             // Save new probability into config
             plugin.getMaterialsConfig().save();
@@ -133,7 +133,7 @@ public class GeneratorMenu extends MenuBuilder {
     private int getPercent()
     {
         int percent = 0;
-        for(Map.Entry<Material, Integer> entry : generator.getPercents().entrySet())
+        for(Map.Entry<Material, Integer> entry : generator.getItems().entrySet())
         {
              percent += entry.getValue();
         }

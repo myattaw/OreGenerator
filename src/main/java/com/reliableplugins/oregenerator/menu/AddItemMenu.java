@@ -4,9 +4,7 @@ import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -42,7 +40,7 @@ public class AddItemMenu extends MenuBuilder {
         }
 
         int slot = 9;
-        for (Map.Entry<Material, Integer> test : generator.getPercents().entrySet()) {
+        for (Map.Entry<Material, Integer> test : generator.getItems().entrySet()) {
             getInventory().setItem(slot++, new ItemStack(test.getKey()));
         }
 
@@ -66,13 +64,13 @@ public class AddItemMenu extends MenuBuilder {
         ItemStack itemStack = event.getCurrentItem();
 
         if (inventory == event.getWhoClicked().getInventory()) {
-            if (!generator.getPercents().containsKey(itemStack.getType()) && itemStack.getType().isSolid()) {
+            if (!generator.getItems().containsKey(itemStack.getType()) && itemStack.getType().isSolid()) {
                 generator.addItem(itemStack.getType(), 0);
                 init();
             }
         } else {
             //TODO: make it remove item from inventory
-            if (generator.getPercents().containsKey(itemStack.getType())) {
+            if (generator.getItems().containsKey(itemStack.getType())) {
                 generator.removeItem(itemStack.getType());
                 init();
             }

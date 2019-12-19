@@ -37,9 +37,8 @@ public class NMSManager {
         return plugin.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     }
 
-
     private void addVersion(NMSHandler nms) {
-//        plugin.setVersion(nms);
+        plugin.setNMS(nms);
     }
 
 }

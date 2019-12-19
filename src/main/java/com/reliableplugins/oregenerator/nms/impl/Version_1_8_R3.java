@@ -5,6 +5,8 @@ import com.reliableplugins.oregenerator.nms.NMSHandler;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.inventory.ItemStack;
 
 public class Version_1_8_R3 implements NMSHandler {
 
@@ -28,6 +30,11 @@ public class Version_1_8_R3 implements NMSHandler {
         chunksection.setType(bp.getX() & 15, bp.getY() & 15, bp.getZ() & 15, ibd);
 
         plugin.getExecutorService().submit(() -> w.notify(bp));
+    }
+
+    @Override
+    public String getItemName(ItemStack itemStack) {
+        return CraftItemStack.asNMSCopy(itemStack).getName();
     }
 
     @Override

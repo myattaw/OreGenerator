@@ -34,6 +34,10 @@ public class GeneratorListeners implements Listener {
                 Generator generator = plugin.getGenerators().get("default");
                 block.setType(generator.generateRandomMaterial());
                 block.getWorld().playSound(block.getLocation(), Sound.FIZZ, 1.0f, 2f);
+
+                // make it so
+
+                // block.breakNaturally(); // bug testing
                 event.setCancelled(true);
             }
         }
