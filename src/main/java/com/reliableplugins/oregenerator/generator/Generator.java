@@ -8,22 +8,22 @@ import java.util.Random;
 
 public class Generator {
 
-    private Map<Material, Integer> items;
+    private Map<Material, Float> items;
     private String name;
 
     public Generator(String name) {
         this.name = name;
         this.items = new LinkedHashMap<>();
-        this.items.put(Material.STONE, 100);
+        this.items.put(Material.STONE, 100f);
     }
 
     public Material generateRandomMaterial() {
         Random rand = new Random();
-        int randInt = rand.nextInt(100);
+        float num = rand.nextInt(1000) / 10f;
 
-        for(Map.Entry<Material, Integer> entry : items.entrySet())
+        for(Map.Entry<Material, Float> entry : items.entrySet())
         {
-            if ((randInt = randInt - entry.getValue()) < 0) {
+            if ((num = num - entry.getValue()) < 0) {
                 return entry.getKey();
             }
         }
@@ -31,7 +31,7 @@ public class Generator {
         return Material.COBBLESTONE;
     }
 
-    public void addItem(Material material, int chance)
+    public void addItem(Material material, float chance)
     {
         this.items.put(material, chance);
     }
@@ -45,7 +45,7 @@ public class Generator {
         return "oregenerator.use." + name;
     }
 
-    public Map<Material, Integer> getItems() {
+    public Map<Material, Float> getItems() {
         return items;
     }
 
