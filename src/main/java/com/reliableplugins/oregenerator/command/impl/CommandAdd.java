@@ -4,9 +4,8 @@ import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.command.AbstractCommand;
 import com.reliableplugins.oregenerator.command.CommandBuilder;
 import com.reliableplugins.oregenerator.generator.Generator;
-import com.reliableplugins.oregenerator.menu.AddItemMenu;
+import com.reliableplugins.oregenerator.menu.impl.AddItemMenu;
 import com.reliableplugins.oregenerator.util.Message;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

@@ -2,6 +2,7 @@ package com.reliableplugins.oregenerator.nms.impl;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.nms.NMSHandler;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class Version_1_13_R1 implements NMSHandler {
 
     @Override
-    public void setBlock(OreGenerator plugin, World world, int x, int y, int z, int id, byte data) {
+    public void setBlock(OreGenerator plugin, World world, int x, int y, int z,  Material material) {
 
     }
 

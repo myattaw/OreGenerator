@@ -19,7 +19,7 @@ public class CommandHelp extends AbstractCommand {
 
     private String header = "&7&m----------&7[ &2OreGenerator &7]&m----------";
 
-    private String line = "&2/oregenerator %s &2%s";
+    private String line = "&2/oregen %s &a%s";
 
     private String footer = "&7&oHover to view permissions";
 
@@ -43,7 +43,7 @@ public class CommandHelp extends AbstractCommand {
 
             AbstractCommand command = commands[i];
 
-            TextComponent message = new TextComponent(Util.color(String.format(line, command.getLabel(), ChatColor.GREEN + command.getDescription())));
+            TextComponent message = new TextComponent(Util.color(String.format(line, command.getLabel(), command.getDescription())));
             message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + command.getPermission()).create()));
 
             if (player != null) {

@@ -1,7 +1,8 @@
-package com.reliableplugins.oregenerator.menu;
+package com.reliableplugins.oregenerator.menu.impl;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
+import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
 import org.bukkit.Material;

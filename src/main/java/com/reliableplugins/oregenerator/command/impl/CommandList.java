@@ -6,7 +6,7 @@ import com.reliableplugins.oregenerator.command.CommandBuilder;
 import com.reliableplugins.oregenerator.util.Message;
 import org.bukkit.command.CommandSender;
 
-@CommandBuilder(label = "list", alias = {"l"}, permission = "oregenerator.list", description = "Shows list of generators")
+@CommandBuilder(label = "list", alias = {"l"}, permission = "oregenerator.list", description = "displays a list of generators")
 public class CommandList extends AbstractCommand {
 
     private OreGenerator plugin;

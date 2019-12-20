@@ -1,41 +1,33 @@
-package com.reliableplugins.oregenerator.menu;
+package com.reliableplugins.oregenerator.menu.impl;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
+import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AddItemMenu extends MenuBuilder {
+public class MainMenu extends MenuBuilder {
 
-    private String name;
     private OreGenerator plugin;
-    private List<String> lore = new ArrayList<>();
 
-    public AddItemMenu(String name, String title, int rows, OreGenerator plugin) {
+    public MainMenu( String title, int rows, OreGenerator plugin) {
         super(title, rows, plugin);
-        this.name = name;
         this.plugin = plugin;
-        lore.add(ChatColor.GRAY + "Add an item to a generator by clicking");
-        lore.add(ChatColor.GRAY +"a material from your inventory.");
-        lore.add("");
-        lore.add(ChatColor.GRAY + "Remove item from generator by clicking");
-        lore.add(ChatColor.GRAY + "on a material inside the menu.");
     }
 
     @Override
-    public AddItemMenu init() {
-        Generator generator = plugin.getGenerators().get(name);
+    public MainMenu init() {
         ItemStack border = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
         ItemStack empty = Util.setName(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem(), " ");
 
@@ -48,10 +40,17 @@ public class AddItemMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-        for (Map.Entry<Material, Float> test : generator.getItems().entrySet()) {
-            ItemStack itemStack = new ItemStack(test.getKey());
-            Util.setLore(itemStack, lore);
-            getInventory().setItem(slot++, Util.setName(itemStack, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(itemStack)));
+
+
+        for (Map.Entry<String, Generator> generators : plugin.getGenerators().entrySet()) {
+            ItemStack itemStack = Util.setName(XMaterial.GREEN_STAINED_GLASS_PANE.parseItem(), ChatColor.DARK_GREEN + generators.getKey());
+            List<String> lore = new ArrayList<>();
+            for (Map.Entry<Material, Float> percents : generators.getValue().getItems().entrySet()) {
+                lore.add(ChatColor.GRAY + plugin.getNMS().getItemName(new ItemStack(percents.getKey())) + ": " + ChatColor.GREEN + percents.getValue().floatValue() + "%");
+            }
+            lore.add("");
+            lore.add(ChatColor.GRAY + "Click to modify block percentages.");
+            getInventory().setItem(slot++,  Util.setLore(itemStack, lore));
         }
 
         getInventory().setItem(40, Util.setName(new ItemStack(Material.BARRIER), ChatColor.RED + "Exit"));
@@ -72,22 +71,25 @@ public class AddItemMenu extends MenuBuilder {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getClickedInventory();
-        Generator generator = plugin.getGenerators().get(name);
-        ItemStack itemStack = event.getCurrentItem();
 
-        if (inventory == event.getWhoClicked().getInventory()) {
-            if (!generator.getItems().containsKey(itemStack.getType()) && itemStack.getType().isSolid()) {
-                generator.addItem(itemStack.getType(), 0);
-                init();
-            }
-        } else {
-            //TODO: make it remove item from inventory
-            if (generator.getItems().containsKey(itemStack.getType())) {
-                generator.removeItem(itemStack.getType());
-                init();
-            }
+        ItemStack itemStack = event.getCurrentItem();
+        if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasDisplayName()) return;
+
+        Player player = (Player) event.getWhoClicked();
+
+        if (itemStack.getType() == Material.BARRIER) {
+            player.closeInventory();
+            return;
         }
+
+        String itemName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
+
+        if (plugin.getGenerators().containsKey(itemName)) {
+            Generator generator = plugin.getGenerators().get(itemName);
+            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / 9));
+            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows).init().getInventory());
+        }
+
     }
 
     @Override
