@@ -73,17 +73,23 @@ public class AddItemMenu extends MenuBuilder {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+
+        // If pressed barrier
+        if(event.getSlot() == 40) {
+            event.getWhoClicked().closeInventory();
+        }
+
         Inventory inventory = event.getClickedInventory();
         Generator generator = plugin.getGenerators().get(name);
         ItemStack itemStack = event.getCurrentItem();
 
-        if (inventory == event.getWhoClicked().getInventory()) {
+        // If item in player inventory
+        if (inventory.equals(event.getWhoClicked().getInventory())) {
             if (!generator.getItems().containsKey(itemStack.getType()) && itemStack.getType().isSolid()) {
                 generator.addItem(itemStack.getType(), 0);
                 init();
             }
         } else {
-            //TODO: make it remove item from inventory
             if (generator.getItems().containsKey(itemStack.getType())) {
                 generator.removeItem(itemStack.getType());
                 init();

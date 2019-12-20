@@ -82,8 +82,11 @@ public class GeneratorMenu extends MenuBuilder {
         Player player = (Player) event.getWhoClicked();
         Material clickedMaterial = event.getCurrentItem().getType();
 
-        player.openInventory(new ProbabilityMenu("this", generator, clickedMaterial, plugin).init().getInventory());
-
+        // If material is already a generator item
+        if(generator.getItems().containsKey(clickedMaterial))
+        {
+            player.openInventory(new ProbabilityMenu("this", generator, clickedMaterial, plugin).init().getInventory());
+        }
     }
 
     @Override

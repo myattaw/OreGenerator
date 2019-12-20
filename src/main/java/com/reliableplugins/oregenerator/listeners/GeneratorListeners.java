@@ -2,7 +2,10 @@ package com.reliableplugins.oregenerator.listeners;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
+import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -28,10 +31,13 @@ public class GeneratorListeners implements Listener{
         if (event.getToBlock().getType() == Material.AIR) {
 
             Block block = event.getToBlock();
+            World world = block.getWorld();
             BlockFace blockFace = event.getFace();
 
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
                 block.setType(plugin.getGenerators().get("default").generateRandomMaterial());
+                world.playSound(block.getLocation(), Sound.FIZZ, 1.0f, 2.0f);
+                world.playEffect(block.getLocation(), Effect.LAVA_POP, 0);
                 event.setCancelled(true);
             }
 

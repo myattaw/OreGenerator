@@ -15,10 +15,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProbabilityMenu extends MenuBuilder {
 
@@ -56,6 +53,8 @@ public class ProbabilityMenu extends MenuBuilder {
         ItemStack remove = XMaterial.RED_STAINED_GLASS_PANE.parseItem();
 
         ItemStack item = new ItemStack(material);
+        Util.setLore(item, new ArrayList<>(
+                Collections.singleton(ChatColor.GRAY + "Current percent: " + ChatColor.RED + generator.getItems().get(material) + "%")));
 
         getInventory().setItem(10, Util.setName(add, "&7Add &a[+5.0%]"));
         getInventory().setItem(11, Util.setName(add, "&7Add &a[+1.0%]"));
@@ -63,9 +62,9 @@ public class ProbabilityMenu extends MenuBuilder {
 
         getInventory().setItem(13, Util.setName(item, ChatColor.DARK_GREEN + CraftItemStack.asNMSCopy(item).getName()));
 
-        getInventory().setItem(14, Util.setName(remove, "&7Remove &c[+0.1%]"));
-        getInventory().setItem(15, Util.setName(remove, "&7Remove &c[+1.0%]"));
-        getInventory().setItem(16, Util.setName(remove, "&7Remove &c[+5.0%]"));
+        getInventory().setItem(14, Util.setName(remove, "&7Remove &c[-0.1%]"));
+        getInventory().setItem(15, Util.setName(remove, "&7Remove &c[-1.0%]"));
+        getInventory().setItem(16, Util.setName(remove, "&7Remove &c[-5.0%]"));
 
         getInventory().setItem(22, Util.setName(new ItemStack(Material.BARRIER), ChatColor.RED + "Exit"));
 
@@ -81,6 +80,15 @@ public class ProbabilityMenu extends MenuBuilder {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
 
+        // If pressed cancel
+        if(event.getSlot() == 22) {
+            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / 9));
+            event.getWhoClicked().openInventory(
+                            new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows)
+                                    .init()
+                                    .getInventory());
+        }
+
         int chance = (int) (generator.getItems().get(material) * 10);
 
         Player player = (Player) event.getWhoClicked();
@@ -89,12 +97,14 @@ public class ProbabilityMenu extends MenuBuilder {
 
         chance += slotValue.get(event.getSlot()) * 10;
 
-        //TODO: add back 100 and 0 percent checks
-        if (getPercent() +  slotValue.get(event.getSlot()) < 0.0f) {
-            player.sendMessage(Message.ERROR_ALREADY_0.getMessage());
+        // If chance of material will become negative
+        if(chance < 0)
+        {
+            player.sendMessage(Message.ERROR_PCTG_LOW.getMessage());
             return;
         }
 
+        // If total chances will become above 100
         if (getPercent() + slotValue.get(event.getSlot()) > 100.0f) {
             player.sendMessage(Message.ERROR_ALREADY_100.getMessage());
             return;
