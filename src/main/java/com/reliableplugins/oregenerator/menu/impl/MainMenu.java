@@ -73,7 +73,7 @@ public class MainMenu extends MenuBuilder {
     public void onInventoryClick(InventoryClickEvent event) {
 
         ItemStack itemStack = event.getCurrentItem();
-        if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasDisplayName()) return;
+        if (itemStack == null || !itemStack.hasItemMeta() || !itemStack.getItemMeta().hasDisplayName()) return;
 
         Player player = (Player) event.getWhoClicked();
 

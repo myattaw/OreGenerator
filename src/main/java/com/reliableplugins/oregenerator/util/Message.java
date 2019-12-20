@@ -2,8 +2,13 @@ package com.reliableplugins.oregenerator.util;
 
 public enum Message {
     LIST_GENERATORS(Util.color("&7Generators: {LIST}")),
-    MATERIAL_ADDED(Util.color("&7{MATERIAL} added with probability of {PROBABILITY}%")),
+    GENERATOR_CREATED(Util.color("&7New generator created: {NAME}")),
+    GENERATOR_REMOVED(Util.color("&7Generator removed: {NAME}")),
     RELOADED(Util.color("&7Oregenerator has been reloaded")),
+
+    HELP_CREATE_GENERATOR(Util.color("&cInvalid usage; /oregenerator create <name>")),
+    HELP_REMOVE_GENERATOR(Util.color("&cInvalid usage; /oregenerator remove <name>")),
+
 
     ERROR_PCTG_INVALID(Util.color("&cInvalid percentage, enter a number")),
     ERROR_PCTG_HIGH(Util.color("&cThat percentage is too high (must be <= {MAX})")),
@@ -13,6 +18,7 @@ public enum Message {
     ERROR_ALREADY_100(Util.color("&cYou are already at 100%")),
 
     ERROR_INVALID_GENERATOR(Util.color("&cInvalid generator")),
+    ERROR_GENERATOR_EXISTS(Util.color("&cThat generator already exists")),
 
     ERROR_TOO_MANY_ARGS(Util.color("&cToo many arguments; /oregenerator")),
     ERROR_NOT_ENOUGH_ARGS(Util.color("&cNot enough arguments; /oregenerator")),

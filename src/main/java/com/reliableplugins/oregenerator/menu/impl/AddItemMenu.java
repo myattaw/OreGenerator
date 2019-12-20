@@ -82,6 +82,7 @@ public class AddItemMenu extends MenuBuilder {
         Inventory inventory = event.getClickedInventory();
         Generator generator = plugin.getGenerators().get(name);
         ItemStack itemStack = event.getCurrentItem();
+        if(itemStack == null || inventory == null) return;
 
         // If item in player inventory
         if (inventory.equals(event.getWhoClicked().getInventory())) {

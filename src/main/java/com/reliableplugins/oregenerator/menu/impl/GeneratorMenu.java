@@ -76,7 +76,7 @@ public class GeneratorMenu extends MenuBuilder {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
 
-        if(!event.getInventory().equals(this.inventory)) return;
+        if(!event.getInventory().equals(this.inventory) || event.getCurrentItem() == null) return;
         event.setCancelled(true);
 
         Player player = (Player) event.getWhoClicked();

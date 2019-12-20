@@ -9,16 +9,11 @@ import org.bukkit.command.CommandSender;
 @CommandBuilder(label = "list", alias = {"l"}, permission = "oregenerator.list", description = "displays a list of generators")
 public class CommandList extends AbstractCommand {
 
-    private OreGenerator plugin;
-
-    public CommandList(OreGenerator plugin) {
-        this.plugin = plugin;
-    }
     @Override
     public void execute(CommandSender sender, String[] args) {
         StringBuilder message = new StringBuilder();
 
-        for(String name : plugin.getGenerators().keySet())
+        for(String name : getPlugin().getGenerators().keySet())
         {
             message.append(name + ", ");
         }
