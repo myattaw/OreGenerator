@@ -6,6 +6,7 @@ import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Message;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -15,6 +16,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class ProbabilityMenu extends MenuBuilder {
@@ -89,13 +91,15 @@ public class ProbabilityMenu extends MenuBuilder {
                                     .getInventory());
         }
 
-        int chance = (int) (generator.getItems().get(material) * 10);
+        float chance = generator.getItems().get(material);
 
         Player player = (Player) event.getWhoClicked();
 
         if (!slotValue.containsKey(event.getSlot())) return;
 
-        chance += slotValue.get(event.getSlot()) * 10;
+
+        chance += slotValue.get(event.getSlot());
+        chance = Math.round(chance * 10f) / 10f;
 
         // If chance of material will become negative
         if(chance < 0)
@@ -105,12 +109,12 @@ public class ProbabilityMenu extends MenuBuilder {
         }
 
         // If total chances will become above 100
-        if (getPercent() + slotValue.get(event.getSlot()) > 100.0f) {
+        if ((getPercent() + chance) > 100.0f) {
             player.sendMessage(Message.ERROR_ALREADY_100.getMessage());
             return;
         }
 
-        generator.getItems().put(material, chance / 10f);
+        generator.getItems().put(material, chance);
 
         // Save new probability into config
         plugin.getMaterialsConfig().save();
@@ -121,9 +125,10 @@ public class ProbabilityMenu extends MenuBuilder {
 
     }
 
-    private int getPercent() {
-        int percent = 0;
+    private float getPercent() {
+        float percent = 0;
         for (Map.Entry<Material, Float> entry : generator.getItems().entrySet()) {
+            if(entry.getKey().equals(material)) continue;
             percent += entry.getValue();
         }
         return percent;

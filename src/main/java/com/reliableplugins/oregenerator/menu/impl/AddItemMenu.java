@@ -49,8 +49,8 @@ public class AddItemMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-        for (Map.Entry<Material, Float> test : generator.getItems().entrySet()) {
-            ItemStack itemStack = new ItemStack(test.getKey());
+        for (Material material : generator.getItems().keySet()) {
+            ItemStack itemStack = new ItemStack(material);
             Util.setLore(itemStack, lore);
             getInventory().setItem(slot++, Util.setName(itemStack, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(itemStack)));
         }
