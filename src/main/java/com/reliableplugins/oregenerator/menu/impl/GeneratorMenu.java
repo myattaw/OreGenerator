@@ -5,16 +5,15 @@ import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
 public class GeneratorMenu extends MenuBuilder {
@@ -30,43 +29,32 @@ public class GeneratorMenu extends MenuBuilder {
 
     @Override
     public GeneratorMenu init() {
-        String title = plugin.getConfig().getString("generator-menu.item-name");
-        List<String> lores = plugin.getConfig().getStringList("generator-menu.item-lore");
 
-        int index = 0;
+        ItemStack border = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
+        ItemStack empty = Util.setName(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem(), " ");
 
-        for(String s : lores)
-        {
-            if(s.contains("%percent%")) break;
-            index++;
+        for (int i = 0; i < ROW_SIZE; i++) {
+            getInventory().setItem(i, border);
         }
 
-        for(Map.Entry<Material, Float> entry : generator.getItems().entrySet())
-        {
-            ItemStack itemStack = new ItemStack(entry.getKey());
-            ItemMeta itemMeta = itemStack.getItemMeta();
-
-            // Set probability and lore
-            float probability = entry.getValue();
-            List<String> itemLores = new ArrayList<>(lores); // Need to copy to not overwrite %percent% permanently
-            itemLores.set(index, lores.get(index).replace("%percent%", Float.toString(probability)));
-            itemMeta.setLore(Util.color(itemLores));
-
-            // Set name
-            String itemName = plugin.getNMS().getItemName(itemStack);
-            itemName = Util.color(title.replace("%material%", itemName));
-            itemMeta.setDisplayName(itemName);
-
-            // Implement customizations
-            itemStack.setItemMeta(itemMeta);
-            getInventory().addItem(itemStack);
+        int slot = ROW_SIZE;
+        for (Map.Entry<Material, Float> items : generator.getItems().entrySet()) {
+            ItemStack item = new ItemStack(items.getKey());
+            Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(items.getKey()) + "%"));
+            getInventory().setItem(slot++, Util.setName(item, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(item)));
         }
 
-        ItemStack itemStack = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
+        getInventory().setItem(getInventory().getSize() - ROW_SIZE, Util.setName(new ItemStack(Material.ARROW), ChatColor.RED + "Back"));
+        getInventory().setItem(getInventory().getSize() - MID_SLOT, Util.setName(new ItemStack(Material.BARRIER), ChatColor.DARK_RED + "Exit"));
+        getInventory().setItem(getInventory().getSize() - 1,  Util.setName(XMaterial.WRITABLE_BOOK.parseItem(), ChatColor.GREEN + "Edit blocks"));
+
 
         for (int i = 0; i < getInventory().getSize(); i++) {
-            if (getInventory().getItem(i) == null) {
-                getInventory().setItem(i, itemStack);
+            if (getInventory().getItem(i) != null) continue;
+            if (i < (getInventory().getSize() - ROW_SIZE)) {
+                getInventory().setItem(i, empty);
+            } else {
+                getInventory().setItem(i, border);
             }
         }
 
@@ -76,22 +64,36 @@ public class GeneratorMenu extends MenuBuilder {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
 
-        if(!event.getInventory().equals(this.inventory) || event.getCurrentItem() == null) return;
+        if (!event.getInventory().equals(this.inventory) || event.getCurrentItem() == null) return;
         event.setCancelled(true);
 
         Player player = (Player) event.getWhoClicked();
         Material clickedMaterial = event.getCurrentItem().getType();
 
+        if (event.getSlot() == (getInventory().getSize() - MID_SLOT)) {
+            player.closeInventory();
+            return;
+        }
+
+        if (event.getSlot() == (getInventory().getSize() - ROW_SIZE)) {
+            int rows = (int) (1 + Math.ceil((plugin.getGenerators().size() - 1) / ROW_SIZE));
+            player.openInventory(new MainMenu("Main Menu", rows + 2, plugin).init().getInventory());
+            return;
+        }
+
+        if (event.getSlot() == (getInventory().getSize() - 1)) {
+            player.openInventory(new AddItemMenu(generator.getName(), "Click to remove or add", 5, plugin).init().getInventory());
+            return;
+        }
+
         // If material is already a generator item
-        if(generator.getItems().containsKey(clickedMaterial))
-        {
+        if (generator.getItems().containsKey(clickedMaterial)) {
             player.openInventory(new ProbabilityMenu("this", generator, clickedMaterial, plugin).init().getInventory());
         }
     }
 
     @Override
     public void onInventoryClose(InventoryCloseEvent event) {
-
     }
 
     @Override

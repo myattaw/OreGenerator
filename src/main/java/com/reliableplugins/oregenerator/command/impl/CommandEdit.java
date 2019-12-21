@@ -36,7 +36,8 @@ public class CommandEdit extends AbstractCommand {
 
         // Else open main menu
         } else {
-            player.openInventory(new MainMenu("Main Menu", 5, getPlugin()).init().getInventory());
+            int rows = (int) (1 + Math.ceil((getPlugin().getGenerators().size() - 1) / 9));
+            player.openInventory(new MainMenu("Main Menu", rows + 2, getPlugin()).init().getInventory());
         }
 
     }

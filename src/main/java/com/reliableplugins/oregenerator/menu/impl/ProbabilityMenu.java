@@ -14,9 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class ProbabilityMenu extends MenuBuilder {
@@ -52,7 +52,7 @@ public class ProbabilityMenu extends MenuBuilder {
         ItemStack itemStack = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
 
         ItemStack add = XMaterial.LIME_STAINED_GLASS_PANE.parseItem();
-        ItemStack remove = XMaterial.RED_STAINED_GLASS_PANE.parseItem();
+        ItemStack rem = XMaterial.RED_STAINED_GLASS_PANE.parseItem();
 
         ItemStack item = new ItemStack(material);
         Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(material) + "%"));
@@ -63,11 +63,11 @@ public class ProbabilityMenu extends MenuBuilder {
 
         getInventory().setItem(13, Util.setName(item, ChatColor.DARK_GREEN + CraftItemStack.asNMSCopy(item).getName()));
 
-        getInventory().setItem(14, Util.setName(remove, "&7Remove &c[-0.1%]"));
-        getInventory().setItem(15, Util.setName(remove, "&7Remove &c[-1.0%]"));
-        getInventory().setItem(16, Util.setName(remove, "&7Remove &c[-5.0%]"));
+        getInventory().setItem(14, Util.setName(rem, "&7Remove &c[-0.1%]"));
+        getInventory().setItem(15, Util.setName(rem, "&7Remove &c[-1.0%]"));
+        getInventory().setItem(16, Util.setName(rem, "&7Remove &c[-5.0%]"));
 
-        getInventory().setItem(22, Util.setName(new ItemStack(Material.BARRIER), ChatColor.RED + "Exit"));
+        getInventory().setItem(22, Util.setName(new ItemStack(Material.BARRIER), ChatColor.DARK_RED + "Exit"));
 
         for (int i = 0; i < getInventory().getSize(); i++) {
             if (getInventory().getItem(i) == null) {
@@ -81,34 +81,28 @@ public class ProbabilityMenu extends MenuBuilder {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
 
-        // If pressed cancel
-        if(event.getSlot() == 22) {
-            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / 9));
-            event.getWhoClicked().openInventory(
-                            new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows)
-                                    .init()
-                                    .getInventory());
-        }
-
         float chance = generator.getItems().get(material);
 
         Player player = (Player) event.getWhoClicked();
 
-        if (!slotValue.containsKey(event.getSlot())) return;
+        if (event.getSlot() == (getInventory().getSize() - MID_SLOT)) {
+            player.closeInventory();
+            return;
+        }
 
+        if (!slotValue.containsKey(event.getSlot())) return;
 
         chance += slotValue.get(event.getSlot());
         chance = Math.round(chance * 10f) / 10f;
 
         // If chance of material will become negative
-        if(chance < 0)
-        {
+        if (chance < 0) {
             player.sendMessage(Message.ERROR_PCTG_LOW.getMessage());
             return;
         }
 
         // If total chances will become above 100
-        if ((getPercent() + chance) > 100.0f) {
+        if (Math.ceil(getPercent() + chance) > 100.0f) {
             player.sendMessage(Message.ERROR_ALREADY_100.getMessage());
             return;
         }
@@ -127,7 +121,7 @@ public class ProbabilityMenu extends MenuBuilder {
     private float getPercent() {
         float percent = 0;
         for (Map.Entry<Material, Float> entry : generator.getItems().entrySet()) {
-            if(entry.getKey().equals(material)) continue;
+            if (entry.getKey().equals(material)) continue;
             percent += entry.getValue();
         }
         return percent;
@@ -135,7 +129,11 @@ public class ProbabilityMenu extends MenuBuilder {
 
     @Override
     public void onInventoryClose(InventoryCloseEvent event) {
-
+        Player player = (Player) event.getPlayer();
+        plugin.getExecutorService().submit(() -> {
+            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
+            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows + 2).init().getInventory());
+        });
     }
 
     @Override

@@ -40,21 +40,20 @@ public class MainMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-
-
         for (Map.Entry<String, Generator> generators : plugin.getGenerators().entrySet()) {
             ItemStack itemStack = Util.setName(XMaterial.GREEN_STAINED_GLASS_PANE.parseItem(), ChatColor.DARK_GREEN + generators.getKey());
             List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify generator."));
             for (Map.Entry<Material, Float> percents : generators.getValue().getItems().entrySet()) {
                 lore.add(ChatColor.GRAY + plugin.getNMS().getItemName(new ItemStack(percents.getKey())) + ": " + ChatColor.GREEN + percents.getValue().floatValue() + "%");
             }
             lore.add("");
-            lore.add(ChatColor.GRAY + "Click to modify block percentages.");
+            lore.add(ChatColor.DARK_GREEN + "Permission:");
+            lore.add(ChatColor.GREEN + "oregenerator.use." + generators.getKey().toLowerCase());
             getInventory().setItem(slot++,  Util.setLore(itemStack, lore));
         }
 
-        getInventory().setItem(40, Util.setName(new ItemStack(Material.BARRIER), ChatColor.RED + "Exit"));
-
+        getInventory().setItem(getInventory().getSize() - MID_SLOT, Util.setName(new ItemStack(Material.BARRIER), ChatColor.DARK_RED + "Exit"));
 
         for (int i = slot; i < getInventory().getSize() - ROW_SIZE; i++) {
             getInventory().setItem(i, empty);
@@ -77,7 +76,7 @@ public class MainMenu extends MenuBuilder {
 
         Player player = (Player) event.getWhoClicked();
 
-        if (itemStack.getType() == Material.BARRIER) {
+        if (event.getSlot() == (getInventory().getSize() - MID_SLOT)) {
             player.closeInventory();
             return;
         }
@@ -86,8 +85,8 @@ public class MainMenu extends MenuBuilder {
 
         if (plugin.getGenerators().containsKey(itemName)) {
             Generator generator = plugin.getGenerators().get(itemName);
-            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / 9));
-            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows).init().getInventory());
+            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
+            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows + 2).init().getInventory());
         }
 
     }
