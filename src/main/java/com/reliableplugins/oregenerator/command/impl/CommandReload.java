@@ -5,7 +5,7 @@ import com.reliableplugins.oregenerator.command.CommandBuilder;
 import com.reliableplugins.oregenerator.util.Message;
 import org.bukkit.command.CommandSender;
 
-@CommandBuilder(label = "reload", alias = {}, permission = "oregenerator.reload")
+@CommandBuilder(label = "reload", alias = {}, permission = "oregenerator.reload", description = "reloads config")
 public class CommandReload extends AbstractCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {

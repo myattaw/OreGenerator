@@ -1,6 +1,5 @@
 package com.reliableplugins.oregenerator.command.impl;
 
-import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.command.AbstractCommand;
 import com.reliableplugins.oregenerator.command.CommandBuilder;
 import com.reliableplugins.oregenerator.util.Message;

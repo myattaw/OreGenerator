@@ -53,8 +53,7 @@ public class ProbabilityMenu extends MenuBuilder {
         ItemStack remove = XMaterial.RED_STAINED_GLASS_PANE.parseItem();
 
         ItemStack item = new ItemStack(material);
-        Util.setLore(item, new ArrayList<>(
-                Collections.singleton(ChatColor.GRAY + "Current percent: " + ChatColor.RED + generator.getItems().get(material) + "%")));
+        Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(material) + "%"));
 
         getInventory().setItem(10, Util.setName(add, "&7Add &a[+5.0%]"));
         getInventory().setItem(11, Util.setName(add, "&7Add &a[+1.0%]"));

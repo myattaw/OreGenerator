@@ -6,8 +6,8 @@ import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.util.Message;
 import org.bukkit.command.CommandSender;
 
-@CommandBuilder(label = "create", permission = "oregenerator.create", alias = {"c", "make"}, description = "creates a new oregenerator")
-public class CommandCreateGenerator extends AbstractCommand {
+@CommandBuilder(label = "create", permission = "oregenerator.create", alias = {"c", "make"}, description = "creates a new generator")
+public class CommandCreate extends AbstractCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         // If didn't enter a generator name, throw error

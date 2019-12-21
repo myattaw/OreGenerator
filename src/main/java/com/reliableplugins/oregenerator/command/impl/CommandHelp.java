@@ -12,12 +12,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandBuilder(label = "help", alias = {"h"}, permission = "oregenerator.help")
+@CommandBuilder(label = "help", alias = {"h"}, permission = "oregenerator.help", description = "basic help command")
 public class CommandHelp extends AbstractCommand {
 
     private BaseCommand baseCommand;
 
-    private String header = "&7&m----------&7[ &2OreGenerator &7]&m----------";
+    private String header = "&7&m----------&7[ &2OreGenerator &a%s&7/&a%s &7]&m----------";
 
     private String line = "&2/oregen %s &a%s";
 
@@ -31,13 +31,20 @@ public class CommandHelp extends AbstractCommand {
     public void execute(CommandSender sender, String[] args) {
 
         AbstractCommand[] commands = baseCommand.getCommands().toArray(new AbstractCommand[baseCommand.getCommands().size()]);
-
-        sender.sendMessage(Util.color(header));
         Player player = Bukkit.getPlayer(sender.getName());
 
-        int page = (0 * 5);
+        int page = 0;
 
-        for (int i = page; i < (page + 5); i++) {
+        if (args.length != 0) {
+            if (args[0].matches("^[0-9]"))
+            page = (Integer.parseInt(args[0]) - 1);
+        }
+
+        int maxPage = (int) Math.floor(commands.length / 5) + 1;
+
+        sender.sendMessage(Util.color(String.format(header, (page + 1), maxPage)));
+
+        for (int i = (page * 5); i < (page * 5) + 5; i++) {
 
             if (i > commands.length - 1) continue;
 

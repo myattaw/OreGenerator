@@ -6,7 +6,7 @@ import com.reliableplugins.oregenerator.util.Message;
 import org.bukkit.command.CommandSender;
 
 @CommandBuilder(label = "remove", alias = {"delete", "del", "rem"}, permission = "oregenerator.remove", description = "remove a generator")
-public class CommandRemoveGenerator extends AbstractCommand {
+public class CommandRemove extends AbstractCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         // If name not entered
