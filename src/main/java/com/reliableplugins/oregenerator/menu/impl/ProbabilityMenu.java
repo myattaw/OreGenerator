@@ -49,6 +49,8 @@ public class ProbabilityMenu extends MenuBuilder {
     @Override
     public ProbabilityMenu init() {
 
+        getInventory().clear();
+
         ItemStack itemStack = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
 
         ItemStack add = XMaterial.LIME_STAINED_GLASS_PANE.parseItem();
@@ -113,8 +115,7 @@ public class ProbabilityMenu extends MenuBuilder {
         plugin.getMaterialsConfig().save();
 
         // Update inventory
-        getInventory().clear();
-        player.openInventory(init().getInventory());
+        init();
 
     }
 

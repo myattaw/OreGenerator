@@ -59,8 +59,7 @@ public class AddItemMenu extends MenuBuilder {
             getInventory().setItem(slot++, Util.setName(itemStack, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(itemStack)));
         }
 
-        getInventory().setItem(40, Util.setName(new ItemStack(Material.BARRIER), ChatColor.DARK_RED + "Exit"));
-        getInventory().setItem(getInventory().getSize() - ROW_SIZE, Util.setName(new ItemStack(Material.ARROW), ChatColor.RED + "Back"));
+        getInventory().setItem(getInventory().getSize() - MID_SLOT, Util.setName(new ItemStack(Material.BARRIER), ChatColor.DARK_RED + "Exit"));
 
         for (int i = slot; i < getInventory().getSize() - ROW_SIZE; i++) {
             getInventory().setItem(i, empty);
@@ -80,14 +79,9 @@ public class AddItemMenu extends MenuBuilder {
 
         // If pressed barrier
         Player player = (Player) event.getWhoClicked();
+
         if (event.getSlot() == (getInventory().getSize() - MID_SLOT)) {
             player.closeInventory();
-            return;
-        }
-
-        if (event.getSlot() == (getInventory().getSize() - ROW_SIZE)) {
-            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
-            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows + 2).init().getInventory());
             return;
         }
 
@@ -112,7 +106,11 @@ public class AddItemMenu extends MenuBuilder {
 
     @Override
     public void onInventoryClose(InventoryCloseEvent event) {
-
+        Player player = (Player) event.getPlayer();
+        plugin.getExecutorService().submit(() -> {
+            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
+            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows + 2).init().getInventory());
+        });
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class GeneratorMenu extends MenuBuilder {
@@ -40,7 +41,8 @@ public class GeneratorMenu extends MenuBuilder {
         int slot = ROW_SIZE;
         for (Map.Entry<Material, Float> items : generator.getItems().entrySet()) {
             ItemStack item = new ItemStack(items.getKey());
-            Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(items.getKey()) + "%"));
+            List<String> lore = Arrays.asList(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify percentages"), ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(items.getKey()) + "%");
+            Util.setLore(item,  lore);
             getInventory().setItem(slot++, Util.setName(item, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(item)));
         }
 

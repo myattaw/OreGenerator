@@ -9,6 +9,9 @@ import com.reliableplugins.oregenerator.listeners.GeneratorListeners;
 import com.reliableplugins.oregenerator.listeners.InventoryListeners;
 import com.reliableplugins.oregenerator.nms.NMSHandler;
 import com.reliableplugins.oregenerator.nms.NMSManager;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -16,11 +19,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class OreGenerator extends JavaPlugin {
+public class OreGenerator extends JavaPlugin implements Listener {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("OreGenerator Thread").build());
 
     private Map<String, Generator> generators = new HashMap<>();
+    private PlayerCache playerCache = new PlayerCache(this);
 
     private HookManager hookManager;
     private NMSManager nmsManager;
@@ -35,6 +39,7 @@ public class OreGenerator extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
         getServer().getPluginManager().registerEvents(new InventoryListeners(), this);
+        getServer().getPluginManager().registerEvents(this, this);
 
         new BaseCommand(this);
 
@@ -49,6 +54,11 @@ public class OreGenerator extends JavaPlugin {
     @Override
     public void onDisable() {
         materialsConfig.save();
+    }
+
+
+    public PlayerCache getPlayerCache() {
+        return playerCache;
     }
 
     public HookManager getHookManager() {
