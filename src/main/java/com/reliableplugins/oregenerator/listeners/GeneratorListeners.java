@@ -31,7 +31,6 @@ public class GeneratorListeners implements Listener{
         if (event.getToBlock().getType() == Material.AIR) {
 
             Block block = event.getToBlock();
-            World world = block.getWorld();
             BlockFace blockFace = event.getFace();
 
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {

@@ -1,12 +1,17 @@
 package com.reliableplugins.oregenerator;
 
 import com.reliableplugins.oregenerator.generator.Generator;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
 
-public class PlayerCache {
+public class PlayerCache implements Listener {
 
     private Map<UUID, Generator> players = new HashMap<>();
     private Map<UUID, List<Generator>> generators = new HashMap<>();
@@ -15,7 +20,18 @@ public class PlayerCache {
     private OreGenerator plugin;
 
     public PlayerCache(OreGenerator plugin) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
         this.plugin = plugin;
+    }
+
+    @EventHandler
+    private void onJoin(PlayerJoinEvent event) {
+        addPlayer(event.getPlayer());
+    }
+
+    @EventHandler
+    private void onQuit(PlayerQuitEvent event) {
+        removePlayer(event.getPlayer().getUniqueId());
     }
 
     public void addLocation(UUID uuid, Location location) {
@@ -28,6 +44,7 @@ public class PlayerCache {
             if (player.hasPermission("oregenerator.use." + generator.getName())) {
                 generators.add(generator);
             }
+            players.put(player.getUniqueId(), generator);
         }
         this.generators.put(player.getUniqueId(), generators);
     }
@@ -39,6 +56,14 @@ public class PlayerCache {
     public void removePlayer(UUID uuid) {
         players.remove(uuid);
         generators.remove(uuid);
+    }
+
+    public Generator getSelected(Player player) {
+        return players.get(player.getUniqueId());
+    }
+
+    public List<Generator> getGenerators(Player player) {
+        return generators.get(player.getUniqueId());
     }
 
 }
