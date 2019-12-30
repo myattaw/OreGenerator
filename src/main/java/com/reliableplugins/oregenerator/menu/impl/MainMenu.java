@@ -41,15 +41,15 @@ public class MainMenu extends MenuBuilder {
 
         int slot = ROW_SIZE;
         for (Map.Entry<String, Generator> generators : plugin.getGenerators().entrySet()) {
-            ItemStack itemStack = Util.setName(XMaterial.GREEN_STAINED_GLASS_PANE.parseItem(), ChatColor.DARK_GREEN + generators.getKey());
+            ItemStack itemStack = Util.setName(XMaterial.GREEN_STAINED_GLASS_PANE.parseItem(), ChatColor.DARK_GREEN + (ChatColor.BOLD + generators.getKey().toUpperCase()));
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify generator."));
             for (Map.Entry<Material, Float> percents : generators.getValue().getItems().entrySet()) {
-                lore.add(ChatColor.GRAY + plugin.getNMS().getItemName(new ItemStack(percents.getKey())) + ": " + ChatColor.GREEN + percents.getValue().floatValue() + "%");
+                lore.add(Util.color("&a&l* &2" + plugin.getNMS().getItemName(new ItemStack(percents.getKey())) + ":&7 " + percents.getValue().floatValue() + "%"));
             }
             lore.add("");
             lore.add(ChatColor.DARK_GREEN + "Permission:");
-            lore.add(ChatColor.GREEN + "oregenerator.use." + generators.getKey().toLowerCase());
+            lore.add(ChatColor.GRAY + "oregenerator.use." + generators.getKey().toLowerCase());
             getInventory().setItem(slot++,  Util.setLore(itemStack, lore));
         }
 
@@ -81,7 +81,7 @@ public class MainMenu extends MenuBuilder {
             return;
         }
 
-        String itemName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
+        String itemName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName().toLowerCase());
 
         if (plugin.getGenerators().containsKey(itemName)) {
             Generator generator = plugin.getGenerators().get(itemName);

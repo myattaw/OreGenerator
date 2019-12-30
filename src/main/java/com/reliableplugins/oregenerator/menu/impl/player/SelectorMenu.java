@@ -55,17 +55,16 @@ public class SelectorMenu extends MenuBuilder {
 
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "You may only select one generator!"));
-            lore.add("");
 
             for (Map.Entry<Material, Float> items : generator.getItems().entrySet()) {
-                lore.add(ChatColor.GRAY + plugin.getNMS().getItemName(new ItemStack(items.getKey())) + ": " + ChatColor.GREEN + items.getValue().floatValue() + "%");
+                lore.add(Util.color("&a&l* &2" + plugin.getNMS().getItemName(new ItemStack(items.getKey())) + ":&7 " + items.getValue().floatValue() + "%"));
             }
 
             String name = generator.getName();
             if (plugin.getPlayerCache().getSelected(player) == generator) {
-                getInventory().setItem(slot++, Util.setLore(Util.setName(enabled, ChatColor.GREEN + name), lore));
+                getInventory().setItem(slot++, Util.setLore(Util.setName(enabled, "&a&l" + name.toUpperCase()), lore));
             } else {
-                getInventory().setItem(slot++, Util.setLore(Util.setName(disabled, ChatColor.RED + name), lore));
+                getInventory().setItem(slot++, Util.setLore(Util.setName(disabled, "&c&l" + name.toUpperCase()), lore));
             }
         }
 
@@ -87,6 +86,12 @@ public class SelectorMenu extends MenuBuilder {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         // add 1 second cooldown
+
+        if (event.getSlot() == (getInventory().getSize() - MID_SLOT)) {
+            player.closeInventory();
+            return;
+        }
+
         Generator generator = generators.get(event.getSlot());
         if (generator != null) {
             plugin.getPlayerCache().setGenerator(player, generator);
