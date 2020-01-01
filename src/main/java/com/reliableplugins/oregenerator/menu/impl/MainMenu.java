@@ -21,8 +21,8 @@ public class MainMenu extends MenuBuilder {
 
     private OreGenerator plugin;
 
-    public MainMenu( String title, int rows, OreGenerator plugin) {
-        super(title, rows, plugin);
+    public MainMenu(int rows, OreGenerator plugin) {
+        super("Select a generator", rows, plugin);
         this.plugin = plugin;
     }
 
@@ -40,13 +40,16 @@ public class MainMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
+
         for (Map.Entry<String, Generator> generators : plugin.getGenerators().entrySet()) {
-            ItemStack itemStack = Util.setName(XMaterial.GREEN_STAINED_GLASS_PANE.parseItem(), ChatColor.DARK_GREEN + (ChatColor.BOLD + generators.getKey().toUpperCase()));
+            ItemStack itemStack = Util.setName(XMaterial.LIME_STAINED_GLASS_PANE.parseItem(), ChatColor.GREEN + (ChatColor.BOLD + generators.getKey().toUpperCase()));
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify generator."));
+
             for (Map.Entry<Material, Float> percents : generators.getValue().getItems().entrySet()) {
                 lore.add(Util.color("&a&l* &2" + plugin.getNMS().getItemName(new ItemStack(percents.getKey())) + ":&7 " + percents.getValue().floatValue() + "%"));
             }
+
             lore.add("");
             lore.add(ChatColor.DARK_GREEN + "Permission:");
             lore.add(ChatColor.GRAY + "oregenerator.use." + generators.getKey().toLowerCase());
@@ -86,7 +89,7 @@ public class MainMenu extends MenuBuilder {
         if (plugin.getGenerators().containsKey(itemName)) {
             Generator generator = plugin.getGenerators().get(itemName);
             int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
-            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows + 2).init().getInventory());
+            player.openInventory(new GeneratorMenu(plugin, generator, rows + 2).init().getInventory());
         }
 
     }

@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class AddItemMenu extends MenuBuilder {
 
@@ -26,8 +25,8 @@ public class AddItemMenu extends MenuBuilder {
 
     private Generator generator;
 
-    public AddItemMenu(String name, String title, int rows, OreGenerator plugin) {
-        super(title, rows, plugin);
+    public AddItemMenu(String name, int rows, OreGenerator plugin) {
+        super("Remove or add blocks", rows, plugin);
         this.name = name;
         this.plugin = plugin;
         this.generator = plugin.getGenerators().get(name);
@@ -109,7 +108,7 @@ public class AddItemMenu extends MenuBuilder {
         Player player = (Player) event.getPlayer();
         plugin.getExecutorService().submit(() -> {
             int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
-            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows + 2).init().getInventory());
+            player.openInventory(new GeneratorMenu(plugin, generator, rows + 2).init().getInventory());
         });
     }
 

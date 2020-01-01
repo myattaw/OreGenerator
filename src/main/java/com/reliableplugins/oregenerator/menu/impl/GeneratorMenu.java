@@ -22,8 +22,8 @@ public class GeneratorMenu extends MenuBuilder {
     private OreGenerator plugin;
     private Generator generator;
 
-    public GeneratorMenu(OreGenerator plugin, Generator generator, String title, int rows) {
-        super(title, rows, plugin);
+    public GeneratorMenu(OreGenerator plugin, Generator generator, int rows) {
+        super("Select a block", rows, plugin);
         this.plugin = plugin;
         this.generator = generator;
     }
@@ -79,18 +79,18 @@ public class GeneratorMenu extends MenuBuilder {
 
         if (event.getSlot() == (getInventory().getSize() - ROW_SIZE)) {
             int rows = (int) (1 + Math.ceil((plugin.getGenerators().size() - 1) / ROW_SIZE));
-            player.openInventory(new MainMenu("Main Menu", rows + 2, plugin).init().getInventory());
+            player.openInventory(new MainMenu(rows + 2, plugin).init().getInventory());
             return;
         }
 
         if (event.getSlot() == (getInventory().getSize() - 1)) {
-            player.openInventory(new AddItemMenu(generator.getName(), "Click to remove or add", 5, plugin).init().getInventory());
+            player.openInventory(new AddItemMenu(generator.getName(), 5, plugin).init().getInventory());
             return;
         }
 
         // If material is already a generator item
         if (generator.getItems().containsKey(clickedMaterial)) {
-            player.openInventory(new ProbabilityMenu("this", generator, clickedMaterial, plugin).init().getInventory());
+            player.openInventory(new ProbabilityMenu(generator, clickedMaterial, plugin).init().getInventory());
         }
     }
 

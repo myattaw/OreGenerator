@@ -25,7 +25,7 @@ public class CommandEdit extends AbstractCommand {
 
                 int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / 9));
                 player.openInventory(
-                        new GeneratorMenu(getPlugin(), generator, getPlugin().getConfig().getString("generator-menu.title"), rows)
+                        new GeneratorMenu(getPlugin(), generator, rows)
                         .init()
                                 .getInventory());
 
@@ -37,7 +37,7 @@ public class CommandEdit extends AbstractCommand {
         // Else open main menu
         } else {
             int rows = (int) (1 + Math.ceil((getPlugin().getGenerators().size() - 1) / 9));
-            player.openInventory(new MainMenu("Main Menu", rows + 2, getPlugin()).init().getInventory());
+            player.openInventory(new MainMenu(rows + 2, getPlugin()).init().getInventory());
         }
 
     }

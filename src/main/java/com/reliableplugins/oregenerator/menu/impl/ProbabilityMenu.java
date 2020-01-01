@@ -28,8 +28,8 @@ public class ProbabilityMenu extends MenuBuilder {
     private List<String> lore = new ArrayList<>();
     private Map<Integer, Float> slotValue = new HashMap<>();
 
-    public ProbabilityMenu(String title, Generator generator, Material material, OreGenerator plugin) {
-        super(title, 3, plugin);
+    public ProbabilityMenu(Generator generator, Material material, OreGenerator plugin) {
+        super("Modify percentages", 3, plugin);
         this.material = material;
         this.generator = generator;
         this.plugin = plugin;
@@ -133,7 +133,7 @@ public class ProbabilityMenu extends MenuBuilder {
         Player player = (Player) event.getPlayer();
         plugin.getExecutorService().submit(() -> {
             int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
-            player.openInventory(new GeneratorMenu(plugin, generator, plugin.getConfig().getString("generator-menu.title"), rows + 2).init().getInventory());
+            player.openInventory(new GeneratorMenu(plugin, generator, rows + 2).init().getInventory());
         });
     }
 
