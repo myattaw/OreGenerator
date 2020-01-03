@@ -2,8 +2,6 @@ package com.reliableplugins.oregenerator.listeners;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -31,11 +29,19 @@ public class GeneratorListeners implements Listener {
     public void onGenerator(BlockFromToEvent event) {
 
         //TODO: make this not get called if player breaks block
+
         if (event.getToBlock().getType() == Material.AIR) {
 
             Block block = event.getToBlock();
+
+            if (generators.containsKey(block.getLocation())) {
+                event.setCancelled(true);
+                return;
+            }
+
             BlockFace blockFace = event.getFace();
 
+            //TODO: fix so it does water check on one side and
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
                 Generator generator = plugin.getGenerators().get("default");
                 block.setType(generator.generateRandomMaterial());
@@ -60,14 +66,13 @@ public class GeneratorListeners implements Listener {
         event.setCancelled(true);
 
         Generator selected = plugin.getPlayerCache().getSelected(player);
+
         if (generators.get(block.getLocation()) != selected) {
             generators.put(block.getLocation(), selected);
         }
 
-        Bukkit.broadcastMessage("generated random");
-        block.breakNaturally(player.getItemInHand());
-
-        block.setType(selected.generateRandomMaterial());
+        plugin.getNMS().breakBlock(block, player.getItemInHand(), player);
+        plugin.getNMS().setBlock(plugin, block.getWorld(), block.getX(), block.getY(), block.getZ(), selected.generateRandomMaterial());
 
     }
 
