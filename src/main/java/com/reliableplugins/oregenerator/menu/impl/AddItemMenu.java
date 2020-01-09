@@ -30,11 +30,11 @@ public class AddItemMenu extends MenuBuilder {
         this.name = name;
         this.plugin = plugin;
         this.generator = plugin.getGenerators().get(name);
-        lore.add(ChatColor.GRAY + "Add an item to a generator by clicking");
-        lore.add(ChatColor.GRAY +"a material from your inventory.");
+        lore.add(ChatColor.GREEN + (ChatColor.BOLD + "*") + ChatColor.GRAY + " Add an item to a generator by clicking");
+        lore.add(ChatColor.GREEN + (ChatColor.BOLD + "*") + ChatColor.GRAY + " a material from your inventory.");
         lore.add("");
-        lore.add(ChatColor.GRAY + "Remove item from generator by clicking");
-        lore.add(ChatColor.GRAY + "on a material inside the menu.");
+        lore.add(ChatColor.RED + (ChatColor.BOLD + "*") + ChatColor.GRAY + " Remove item from generator by clicking");
+        lore.add(ChatColor.RED + (ChatColor.BOLD + "*") + ChatColor.GRAY + " on a material inside the menu.");
     }
 
     @Override

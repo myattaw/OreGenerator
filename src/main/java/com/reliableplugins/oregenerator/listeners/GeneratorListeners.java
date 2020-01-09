@@ -71,7 +71,7 @@ public class GeneratorListeners implements Listener {
             generators.put(block.getLocation(), selected);
         }
 
-        plugin.getNMS().breakBlock(block, player.getItemInHand(), player);
+        plugin.getNMS().breakBlock(block, player);
         plugin.getNMS().setBlock(plugin, block.getWorld(), block.getX(), block.getY(), block.getZ(), selected.generateRandomMaterial());
 
     }

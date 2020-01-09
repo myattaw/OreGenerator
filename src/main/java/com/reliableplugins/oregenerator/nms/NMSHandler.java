@@ -15,6 +15,6 @@ public interface NMSHandler {
 
     String getVersion();
 
-    void breakBlock(Block block, ItemStack itemStack, Player player);
+    void breakBlock(Block block, Player player);
 
 }
