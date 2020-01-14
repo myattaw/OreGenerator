@@ -18,7 +18,16 @@ public class Version_1_13_R2 implements NMSHandler {
 
     @Override
     public void setBlock(OreGenerator plugin, World world, int x, int y, int z,  Material material) {
+        if (y > 255) return;
+        net.minecraft.server.v1_13_R2.World w = ((CraftWorld) world).getHandle();
+        Chunk chunk = w.getChunkAt(x >> 4, z >> 4);
+        BlockPosition bp = new BlockPosition(x, y, z);
+        ChunkSection chunksection = chunk.getSections()[bp.getY() >> 4];
 
+        IBlockData iBlockData = net.minecraft.server.v1_13_R2.Block.getByCombinedId(material.getId());
+        chunksection.setType(bp.getX() & 15, bp.getY() & 15, bp.getZ() & 15, iBlockData);
+
+        plugin.getExecutorService().submit(() -> w.notify(bp, iBlockData, iBlockData, 2));
     }
 
     @Override

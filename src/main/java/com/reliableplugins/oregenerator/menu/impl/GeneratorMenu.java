@@ -84,7 +84,7 @@ public class GeneratorMenu extends MenuBuilder {
         }
 
         if (event.getSlot() == (getInventory().getSize() - 1)) {
-            player.openInventory(new AddItemMenu(generator.getName(), 5, plugin).init().getInventory());
+            player.openInventory(new BlockEditorMenu(generator.getName(), 5, plugin).init().getInventory());
             return;
         }
 

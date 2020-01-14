@@ -32,7 +32,7 @@ public class OreGenerator extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        this.hookManager = new HookManager(this);
+//        this.hookManager = new HookManager(this);
         this.nmsManager = new NMSManager(this);
         this.playerCache = new PlayerCache(this);
 

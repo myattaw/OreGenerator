@@ -2,6 +2,7 @@ package com.reliableplugins.oregenerator.listeners;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,8 +30,7 @@ public class GeneratorListeners implements Listener {
     public void onGenerator(BlockFromToEvent event) {
 
         //TODO: make this not get called if player breaks block
-
-        if (event.getToBlock().getType() == Material.AIR) {
+        if (event.getToBlock().getType() == Material.AIR || event.getToBlock().getType() == Material.COBBLESTONE) {
 
             Block block = event.getToBlock();
 

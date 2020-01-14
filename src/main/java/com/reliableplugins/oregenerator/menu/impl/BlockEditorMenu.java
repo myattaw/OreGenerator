@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddItemMenu extends MenuBuilder {
+public class BlockEditorMenu extends MenuBuilder {
 
     private String name;
     private OreGenerator plugin;
@@ -25,20 +25,20 @@ public class AddItemMenu extends MenuBuilder {
 
     private Generator generator;
 
-    public AddItemMenu(String name, int rows, OreGenerator plugin) {
+    public BlockEditorMenu(String name, int rows, OreGenerator plugin) {
         super("Remove or add blocks", rows, plugin);
         this.name = name;
         this.plugin = plugin;
         this.generator = plugin.getGenerators().get(name);
         lore.add(ChatColor.GREEN + (ChatColor.BOLD + "*") + ChatColor.GRAY + " Add an item to a generator by clicking");
-        lore.add(ChatColor.GREEN + (ChatColor.BOLD + "*") + ChatColor.GRAY + " a material from your inventory.");
+        lore.add(ChatColor.GRAY + "a material from your inventory.");
         lore.add("");
         lore.add(ChatColor.RED + (ChatColor.BOLD + "*") + ChatColor.GRAY + " Remove item from generator by clicking");
-        lore.add(ChatColor.RED + (ChatColor.BOLD + "*") + ChatColor.GRAY + " on a material inside the menu.");
+        lore.add(ChatColor.GRAY + "on a material inside the menu.");
     }
 
     @Override
-    public AddItemMenu init() {
+    public BlockEditorMenu init() {
 
         ItemStack border = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
         ItemStack empty = Util.setName(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem(), " ");

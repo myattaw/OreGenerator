@@ -6,15 +6,12 @@ import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Message;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -63,7 +60,7 @@ public class ProbabilityMenu extends MenuBuilder {
         getInventory().setItem(11, Util.setName(add, "&7Add &a[+1.0%]"));
         getInventory().setItem(12, Util.setName(add, "&7Add &a[+0.1%]"));
 
-        getInventory().setItem(13, Util.setName(item, ChatColor.DARK_GREEN + CraftItemStack.asNMSCopy(item).getName()));
+        getInventory().setItem(13, Util.setName(item, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(item)));
 
         getInventory().setItem(14, Util.setName(rem, "&7Remove &c[-0.1%]"));
         getInventory().setItem(15, Util.setName(rem, "&7Remove &c[-1.0%]"));
