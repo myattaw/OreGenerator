@@ -59,7 +59,11 @@ public class PlayerCache implements Listener {
     }
 
     public Generator getSelected(Player player) {
-        return players.get(player.getUniqueId());
+        Generator generator = players.get(player.getUniqueId());
+        if (generator == null) {
+            return plugin.getGenerators().get("default");
+        }
+        return generator;
     }
 
     public List<Generator> getGenerators(Player player) {

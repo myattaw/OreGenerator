@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GeneratorListeners implements Listener {
 
@@ -34,13 +35,15 @@ public class GeneratorListeners implements Listener {
 
             Block block = event.getToBlock();
 
+            if(!isRegenable(block)) return;
+
             if (generators.containsKey(block.getLocation())) {
                 event.setCancelled(true);
                 return;
             }
 
             BlockFace blockFace = event.getFace();
-
+            Bukkit.broadcastMessage(blockFace.name());
             //TODO: fix so it does water check on one side and
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
                 Generator generator = plugin.getGenerators().get("default");
@@ -61,11 +64,17 @@ public class GeneratorListeners implements Listener {
 
         if (!generators.containsKey(block.getLocation())) return;
 
+        // If touching neither lava or water, exit
+        long start = System.nanoTime();
+        if(!isRegenable(block)) return;
+        long end = System.nanoTime();
+
+        Bukkit.broadcastMessage("Took: " + (end - start) + " ns");
+
         Player player = event.getPlayer();
+        Generator selected = plugin.getPlayerCache().getSelected(player);
 
         event.setCancelled(true);
-
-        Generator selected = plugin.getPlayerCache().getSelected(player);
 
         if (generators.get(block.getLocation()) != selected) {
             generators.put(block.getLocation(), selected);
@@ -76,4 +85,33 @@ public class GeneratorListeners implements Listener {
 
     }
 
+    private boolean isRegenable(Block block) {
+        Material northBlock = block.getRelative(BlockFace.NORTH).getType();
+        if(northBlock == Material.STATIONARY_LAVA || northBlock == Material.LAVA)
+        {
+            Material southBlock = block.getRelative(BlockFace.SOUTH).getType();
+            if(southBlock == Material.STATIONARY_WATER || southBlock == Material.WATER) return true;
+        }
+
+        if(northBlock == Material.STATIONARY_WATER || northBlock == Material.WATER)
+        {
+            Material southBlock = block.getRelative(BlockFace.SOUTH).getType();
+            if(southBlock == Material.STATIONARY_LAVA || southBlock == Material.LAVA) return true;
+        }
+
+        Material eastBlock = block.getRelative(BlockFace.EAST).getType();
+        if(eastBlock == Material.STATIONARY_LAVA || eastBlock == Material.LAVA)
+        {
+            Material westBlock = block.getRelative(BlockFace.WEST).getType();
+            if(westBlock == Material.STATIONARY_WATER || westBlock == Material.WATER) return true;
+        }
+
+        if(eastBlock == Material.STATIONARY_WATER || eastBlock == Material.WATER)
+        {
+            Material westBlock = block.getRelative(BlockFace.WEST).getType();
+            if(westBlock == Material.STATIONARY_LAVA || westBlock == Material.LAVA) return true;
+        }
+
+        return false;
+    }
 }

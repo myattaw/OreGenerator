@@ -23,7 +23,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
-                    <outputDirectory>C:\Users\pengy\Desktop\Minecraft Server\plugins</outputDirectory>
+                    <outputDirectory>C:\Users\pengy\OneDrive\Documents\Server1.12\plugins</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
@@ -49,48 +49,48 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.8_R3</version>
-            <systemPath>${project.basedir}/lib/1.8.8.jar</systemPath>
+            <version>1.8.8</version>
+            <systemPath>${project.basedir}/lib/spigot1.8.8.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc.</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.11_R1</version>
-            <systemPath>${project.basedir}/lib/1.11.jar</systemPath>
+            <version>1.11.2</version>
+            <systemPath>${project.basedir}/lib/spigot1.11.2.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc..</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.12_R1</version>
-            <systemPath>${project.basedir}/lib/1.12.jar</systemPath>
+            <version>1.12.2</version>
+            <systemPath>${project.basedir}/lib/spigot1.12.2.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc...</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.13_R1</version>
-            <systemPath>${project.basedir}/lib/1.13.jar</systemPath>
+            <version>1.13</version>
+            <systemPath>${project.basedir}/lib/spigot1.13.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc....</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.13_R2</version>
-            <systemPath>${project.basedir}/lib/1.13.2.jar</systemPath>
+            <version>1.13.2</version>
+            <systemPath>${project.basedir}/lib/spigot1.13.2.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc.....</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.14.2</version>
-            <systemPath>${project.basedir}/lib/1.14.2.jar</systemPath>
+            <version>1.14.4</version>
+            <systemPath>${project.basedir}/lib/spigot1.14.4.jar</systemPath>
         </dependency>
 
 

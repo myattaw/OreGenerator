@@ -9,6 +9,7 @@ import com.reliableplugins.oregenerator.listeners.GeneratorListeners;
 import com.reliableplugins.oregenerator.listeners.InventoryListeners;
 import com.reliableplugins.oregenerator.nms.NMSHandler;
 import com.reliableplugins.oregenerator.nms.NMSManager;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -35,6 +36,11 @@ public class OreGenerator extends JavaPlugin implements Listener {
 //        this.hookManager = new HookManager(this);
         this.nmsManager = new NMSManager(this);
         this.playerCache = new PlayerCache(this);
+
+        for(Player p : this.getServer().getOnlinePlayers())
+        {
+            playerCache.addPlayer(p);
+        }
 
         getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
         getServer().getPluginManager().registerEvents(new InventoryListeners(), this);
