@@ -52,7 +52,23 @@
             <version>1.8.8</version>
             <systemPath>${project.basedir}/lib/spigot1.8.8.jar</systemPath>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.spigotmc.</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1.11</version>
+            <systemPath>${project.basedir}/lib/spigot1.11.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc..</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1.12</version>
+            <systemPath>${project.basedir}/lib/spigot1.12.jar</systemPath>
+        </dependency>
+
         <dependency>
             <groupId>org.spigotmc...</groupId>
             <artifactId>spigot</artifactId>

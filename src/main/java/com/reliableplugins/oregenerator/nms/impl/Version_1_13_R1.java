@@ -24,7 +24,7 @@ public class Version_1_13_R1 implements NMSHandler {
         BlockPosition bp = new BlockPosition(x, y, z);
         ChunkSection chunksection = chunk.getSections()[bp.getY() >> 4];
 
-        IBlockData iBlockData = net.minecraft.server.v1_13_R1.Block.getByCombinedId(material.getId());
+        IBlockData iBlockData = CraftMagicNumbers.getBlock(material).getBlockData();
         chunksection.setType(bp.getX() & 15, bp.getY() & 15, bp.getZ() & 15, iBlockData);
 
         plugin.getExecutorService().submit(() -> w.notify(bp, iBlockData, iBlockData, 2));
