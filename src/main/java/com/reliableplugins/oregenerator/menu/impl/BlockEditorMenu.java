@@ -30,10 +30,10 @@ public class BlockEditorMenu extends MenuBuilder {
         this.name = name;
         this.plugin = plugin;
         this.generator = plugin.getGenerators().get(name);
-        lore.add(ChatColor.GREEN + (ChatColor.BOLD + "*") + ChatColor.GRAY + " Add an item to a generator by clicking");
+        lore.add(ChatColor.GRAY + "[" + ChatColor.GREEN + (ChatColor.BOLD + "+") + ChatColor.GRAY + "]" + ChatColor.ITALIC + " Add an item to a generator by clicking");
         lore.add(ChatColor.GRAY + "a material from your inventory.");
         lore.add("");
-        lore.add(ChatColor.RED + (ChatColor.BOLD + "*") + ChatColor.GRAY + " Remove item from generator by clicking");
+        lore.add(ChatColor.GRAY + "[" + ChatColor.RED + (ChatColor.BOLD + "-") + ChatColor.GRAY + "]" + ChatColor.ITALIC + " Remove item from generator by clicking");
         lore.add(ChatColor.GRAY + "on a material inside the menu.");
     }
 

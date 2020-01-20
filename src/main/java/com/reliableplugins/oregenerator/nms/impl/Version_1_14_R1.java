@@ -19,7 +19,6 @@ public class Version_1_14_R1 implements NMSHandler {
     @Override
     public void setBlock(OreGenerator plugin, World world, int x, int y, int z,  Material material) {
         if (y > 255) return;
-
         net.minecraft.server.v1_14_R1.World w = ((CraftWorld) world).getHandle();
         Chunk chunk = w.getChunkAt(x >> 4, z >> 4);
         BlockPosition bp = new BlockPosition(x, y, z);
