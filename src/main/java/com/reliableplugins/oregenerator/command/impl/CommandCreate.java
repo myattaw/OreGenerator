@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 
 @CommandBuilder(label = "create", permission = "oregenerator.create", alias = {"c", "make"}, description = "creates a new generator")
 public class CommandCreate extends AbstractCommand {
+
     @Override
     public void execute(CommandSender sender, String[] args) {
         // If didn't enter a generator name, throw error
@@ -16,7 +17,7 @@ public class CommandCreate extends AbstractCommand {
             return;
         }
 
-        String name = args[0];
+        String name = args[0].toLowerCase();
 
         // If generator already exists, throw error
         if(getPlugin().getGenerators().containsKey(name)) {
