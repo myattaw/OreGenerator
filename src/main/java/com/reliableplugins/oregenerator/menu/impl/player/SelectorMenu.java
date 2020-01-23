@@ -40,9 +40,6 @@ public class SelectorMenu extends MenuBuilder {
         ItemStack border = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
         ItemStack empty = Util.setName(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem(), " ");
 
-        ItemStack enabled = XMaterial.LIME_STAINED_GLASS_PANE.parseItem();
-        ItemStack disabled = XMaterial.RED_STAINED_GLASS_PANE.parseItem();
-
         for (int i = 0; i < ROW_SIZE; i++) {
             if (getInventory().getItem(i) == null) {
                 getInventory().setItem(i, border);
@@ -57,14 +54,24 @@ public class SelectorMenu extends MenuBuilder {
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "You may only select one generator!"));
 
             for (Map.Entry<Material, Float> items : generator.getItems().entrySet()) {
-                lore.add(Util.color("&a&l* &2" + plugin.getNMS().getItemName(new ItemStack(items.getKey())) + ":&7 " + items.getValue().floatValue() + "%"));
+                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(new ItemStack(items.getKey())) + ":&7 " + items.getValue().floatValue() + "%"));
+            }
+
+            Material material = XMaterial.COBBLESTONE.parseMaterial();
+
+            float max = Collections.max(generator.getItems().values());
+
+            for (Map.Entry<Material, Float> items : generator.getItems().entrySet()) {
+                if (items.getValue() == max) {
+                    material = items.getKey();
+                }
             }
 
             String name = generator.getName();
             if (plugin.getPlayerCache().getSelected(player) == generator) {
-                getInventory().setItem(slot++, Util.setLore(Util.setName(enabled, "&a&l" + name.toUpperCase()), lore));
+                getInventory().setItem(slot++, Util.setLore(Util.setName(new ItemStack(material), "&a&l" + name.toUpperCase()), lore));
             } else {
-                getInventory().setItem(slot++, Util.setLore(Util.setName(disabled, "&c&l" + name.toUpperCase()), lore));
+                getInventory().setItem(slot++, Util.setLore(Util.setName(new ItemStack(material), "&c&l" + name.toUpperCase()), lore));
             }
         }
 

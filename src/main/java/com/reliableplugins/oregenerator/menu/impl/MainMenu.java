@@ -7,6 +7,7 @@ import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -14,6 +15,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -42,12 +44,24 @@ public class MainMenu extends MenuBuilder {
         int slot = ROW_SIZE;
 
         for (Map.Entry<String, Generator> generators : plugin.getGenerators().entrySet()) {
-            ItemStack itemStack = Util.setName(XMaterial.LIME_STAINED_GLASS_PANE.parseItem(), ChatColor.GREEN + (ChatColor.BOLD + generators.getKey().toUpperCase()));
+
+            Material material = XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial();
+
+            float max = Collections.max(generators.getValue().getItems().values());
+
+            for (Map.Entry<Material, Float> items : generators.getValue().getItems().entrySet()) {
+                if (items.getValue() == max) {
+                    material = items.getKey();
+                }
+            }
+
+            ItemStack itemStack = Util.setName(new ItemStack(material), ChatColor.GREEN + (ChatColor.BOLD + generators.getKey().toUpperCase()));
+
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify generator."));
 
             for (Map.Entry<Material, Float> percents : generators.getValue().getItems().entrySet()) {
-                lore.add(Util.color("&a&l* &2" + plugin.getNMS().getItemName(new ItemStack(percents.getKey())) + ":&7 " + percents.getValue().floatValue() + "%"));
+                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(new ItemStack(percents.getKey())) + ":&7 " + percents.getValue().floatValue() + "%"));
             }
 
             lore.add("");
