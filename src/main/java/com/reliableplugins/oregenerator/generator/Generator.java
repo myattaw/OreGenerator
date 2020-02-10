@@ -1,5 +1,6 @@
 package com.reliableplugins.oregenerator.generator;
 
+import com.reliableplugins.oregenerator.util.XMaterial;
 import org.bukkit.Material;
 
 import java.util.LinkedHashMap;
@@ -8,35 +9,35 @@ import java.util.Random;
 
 public class Generator {
 
-    private Map<Material, Float> items;
+    private Map<XMaterial, Float> items;
     private String name;
 
     public Generator(String name) {
         this.name = name;
         this.items = new LinkedHashMap<>();
-        this.items.put(Material.STONE, 100f);
+        this.items.put(XMaterial.STONE, 100f);
     }
 
-    public Material generateRandomMaterial() {
+    public XMaterial generateRandomMaterial() {
         Random rand = new Random();
         float num = rand.nextInt(1000) / 10f;
 
-        for(Map.Entry<Material, Float> entry : items.entrySet())
+        for(Map.Entry<XMaterial, Float> entry : items.entrySet())
         {
             if ((num = num - entry.getValue()) < 0) {
                 return entry.getKey();
             }
         }
 
-        return Material.COBBLESTONE;
+        return XMaterial.COBBLESTONE;
     }
 
-    public void addItem(Material material, float chance)
+    public void addItem(XMaterial material, float chance)
     {
         this.items.put(material, chance);
     }
 
-    public void removeItem(Material material)
+    public void removeItem(XMaterial material)
     {
         this.items.remove(material);
     }
@@ -45,7 +46,7 @@ public class Generator {
         return "oregenerator.use." + name;
     }
 
-    public Map<Material, Float> getItems() {
+    public Map<XMaterial, Float> getItems() {
         return items;
     }
 

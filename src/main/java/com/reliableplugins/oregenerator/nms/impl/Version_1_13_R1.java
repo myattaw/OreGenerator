@@ -17,14 +17,14 @@ import org.bukkit.inventory.ItemStack;
 public class Version_1_13_R1 implements NMSHandler {
 
     @Override
-    public void setBlock(OreGenerator plugin, World world, int x, int y, int z,  Material material) {
+    public void setBlock(OreGenerator plugin, World world, int x, int y, int z,  Material material, byte data) {
         if (y > 255) return;
         net.minecraft.server.v1_13_R1.World w = ((CraftWorld) world).getHandle();
         Chunk chunk = w.getChunkAt(x >> 4, z >> 4);
         BlockPosition bp = new BlockPosition(x, y, z);
         ChunkSection chunksection = chunk.getSections()[bp.getY() >> 4];
 
-        IBlockData iBlockData = CraftMagicNumbers.getBlock(material).getBlockData();
+        IBlockData iBlockData = CraftMagicNumbers.getBlock(material, data);
         chunksection.setType(bp.getX() & 15, bp.getY() & 15, bp.getZ() & 15, iBlockData);
 
         plugin.getExecutorService().submit(() -> w.notify(bp, iBlockData, iBlockData, 2));

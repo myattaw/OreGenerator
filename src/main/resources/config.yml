@@ -1,3 +1,10 @@
 # what worlds to disable lava generators
 disabled-worlds:
   - "world_nether"
+
+generator-item:
+  default:
+    name: "&a&lDEFAULT &7&lGENERATOR"
+    lore:
+      - "&7Place me to create a custom generator at"
+      - "&7Any location."

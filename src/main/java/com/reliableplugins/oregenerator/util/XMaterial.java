@@ -926,13 +926,13 @@ public enum XMaterial {
         }
         return null;
     }
-
+    
     public boolean isSameMaterial(ItemStack comp) {
         if (isNewVersion()) {
             return comp.getType() == this.parseMaterial();
         }
         if (comp.getType() == this.parseMaterial() &&
-                (int) comp.getData().getData() == (int) this.data) {
+                (int) comp.getData().getData() == this.data) {
             return true;
         }
         XMaterial xmat = fromMaterial(comp.getType());
@@ -944,7 +944,7 @@ public enum XMaterial {
         return false;
     }
 
-    public XMaterial fromMaterial(Material mat) {
+    public static XMaterial fromMaterial(Material mat) {
         try {
             return XMaterial.valueOf(mat.toString());
         } catch (IllegalArgumentException e) {

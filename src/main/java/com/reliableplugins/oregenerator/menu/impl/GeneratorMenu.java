@@ -5,6 +5,7 @@ import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,8 +40,8 @@ public class GeneratorMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-        for (Map.Entry<Material, Float> items : generator.getItems().entrySet()) {
-            ItemStack item = new ItemStack(items.getKey());
+        for (Map.Entry<XMaterial, Float> items : generator.getItems().entrySet()) {
+            ItemStack item = items.getKey().parseItem();
             List<String> lore = Arrays.asList(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify percentages"), ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(items.getKey()) + "%");
             Util.setLore(item,  lore);
             getInventory().setItem(slot++, Util.setName(item, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(item)));
@@ -70,7 +71,8 @@ public class GeneratorMenu extends MenuBuilder {
         event.setCancelled(true);
 
         Player player = (Player) event.getWhoClicked();
-        Material clickedMaterial = event.getCurrentItem().getType();
+
+        XMaterial clickedMaterial = XMaterial.fromMaterial(event.getCurrentItem().getType());
 
         if (event.getSlot() == (getInventory().getSize() - MID_SLOT)) {
             player.closeInventory();

@@ -5,6 +5,7 @@ import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,8 +53,8 @@ public class BlockEditorMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-        for (Material material : generator.getItems().keySet()) {
-            ItemStack itemStack = new ItemStack(material);
+        for (XMaterial material : generator.getItems().keySet()) {
+            ItemStack itemStack = material.parseItem();
             Util.setLore(itemStack, lore);
             getInventory().setItem(slot++, Util.setName(itemStack, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(itemStack)));
         }
@@ -75,7 +76,6 @@ public class BlockEditorMenu extends MenuBuilder {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-
         // If pressed barrier
         Player player = (Player) event.getWhoClicked();
 
@@ -87,17 +87,21 @@ public class BlockEditorMenu extends MenuBuilder {
         Inventory inventory = event.getClickedInventory();
         Generator generator = plugin.getGenerators().get(name);
         ItemStack itemStack = event.getCurrentItem();
+
+        XMaterial xMaterial = XMaterial.requestXMaterial(itemStack.getType().name(), (byte) itemStack.getDurability());
+
         if(itemStack == null || inventory == null) return;
 
-        // If item in player inventory
-        if (inventory.equals(event.getWhoClicked().getInventory())) {
-            if (!generator.getItems().containsKey(itemStack.getType()) && itemStack.getType().isSolid()) {
-                generator.addItem(itemStack.getType(), 0);
+        if (inventory == player.getInventory()) {
+
+            if (!generator.getItems().containsKey(xMaterial) && itemStack.getType().isSolid()) {
+                //TODO: add item by data
+                generator.addItem(xMaterial, 0);
                 init();
             }
         } else {
-            if (generator.getItems().containsKey(itemStack.getType())) {
-                generator.removeItem(itemStack.getType());
+            if (generator.getItems().containsKey(xMaterial)) {
+                generator.removeItem(xMaterial);
                 init();
             }
         }

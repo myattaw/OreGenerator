@@ -2,6 +2,7 @@ package com.reliableplugins.oregenerator.listeners;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
+import com.reliableplugins.oregenerator.util.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,7 +46,7 @@ public class GeneratorListeners implements Listener {
             BlockFace blockFace = event.getFace();
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
                 Generator generator = plugin.getGenerators().get("default");
-                block.setType(generator.generateRandomMaterial());
+                block.setType(generator.generateRandomMaterial().parseMaterial());
                 event.setCancelled(true);
                 if (!generators.containsKey(block.getLocation())) {
                     generators.put(block.getLocation(), generator);
@@ -74,7 +75,10 @@ public class GeneratorListeners implements Listener {
         }
 
         plugin.getNMS().breakBlock(block, player);
-        plugin.getNMS().setBlock(plugin, block.getWorld(), block.getX(), block.getY(), block.getZ(), selected.generateRandomMaterial());
+
+        XMaterial random = selected.generateRandomMaterial();
+
+        plugin.getNMS().setBlock(plugin, block.getWorld(), block.getX(), block.getY(), block.getZ(), random.parseMaterial(), random.getData());
 
     }
 

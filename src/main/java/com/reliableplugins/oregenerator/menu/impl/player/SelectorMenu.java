@@ -53,17 +53,17 @@ public class SelectorMenu extends MenuBuilder {
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "You may only select one generator!"));
 
-            for (Map.Entry<Material, Float> items : generator.getItems().entrySet()) {
-                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(new ItemStack(items.getKey())) + ":&7 " + items.getValue().floatValue() + "%"));
+            for (Map.Entry<XMaterial, Float> items : generator.getItems().entrySet()) {
+                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(items.getKey().parseItem()) + ":&7 " + items.getValue().floatValue() + "%"));
             }
 
             Material material = XMaterial.COBBLESTONE.parseMaterial();
 
             float max = Collections.max(generator.getItems().values());
 
-            for (Map.Entry<Material, Float> items : generator.getItems().entrySet()) {
+            for (Map.Entry<XMaterial, Float> items : generator.getItems().entrySet()) {
                 if (items.getValue() == max) {
-                    material = items.getKey();
+                    material = items.getKey().parseMaterial();
                 }
             }
 

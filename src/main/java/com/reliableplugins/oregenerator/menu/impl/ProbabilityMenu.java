@@ -18,14 +18,14 @@ import java.util.*;
 
 public class ProbabilityMenu extends MenuBuilder {
 
-    private Material material;
+    private XMaterial material;
     private Generator generator;
     private OreGenerator plugin;
 
     private List<String> lore = new ArrayList<>();
     private Map<Integer, Float> slotValue = new HashMap<>();
 
-    public ProbabilityMenu(Generator generator, Material material, OreGenerator plugin) {
+    public ProbabilityMenu(Generator generator, XMaterial material, OreGenerator plugin) {
         super("Modify percentages", 3, plugin);
         this.material = material;
         this.generator = generator;
@@ -53,7 +53,7 @@ public class ProbabilityMenu extends MenuBuilder {
         ItemStack add = XMaterial.LIME_STAINED_GLASS_PANE.parseItem();
         ItemStack rem = XMaterial.RED_STAINED_GLASS_PANE.parseItem();
 
-        ItemStack item = new ItemStack(material);
+        ItemStack item = material.parseItem();
         Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(material) + "%"));
 
         getInventory().setItem(10, Util.setName(add, "&7Add &a[+5.0%]"));
@@ -118,7 +118,7 @@ public class ProbabilityMenu extends MenuBuilder {
 
     private float getPercent() {
         float percent = 0;
-        for (Map.Entry<Material, Float> entry : generator.getItems().entrySet()) {
+        for (Map.Entry<XMaterial, Float> entry : generator.getItems().entrySet()) {
             if (entry.getKey().equals(material)) continue;
             percent += entry.getValue();
         }
