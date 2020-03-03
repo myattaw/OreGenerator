@@ -40,46 +40,58 @@ public class SelectorMenu extends MenuBuilder {
         ItemStack border = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
         ItemStack empty = Util.setName(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem(), " ");
 
+        ItemStack enabled = Util.setName(XMaterial.LIME_STAINED_GLASS_PANE.parseItem(), "&a&lENABLED");
+        ItemStack disabled = Util.setName(XMaterial.RED_STAINED_GLASS_PANE.parseItem(), "&c&lDISABLED");
+
+        int slot = ROW_SIZE;
+
+        Generator[] generators = plugin.getPlayerCache().getGenerators(player).stream().toArray(Generator[]::new);
+
         for (int i = 0; i < ROW_SIZE; i++) {
             if (getInventory().getItem(i) == null) {
                 getInventory().setItem(i, border);
             }
         }
 
-        int slot = ROW_SIZE;
+        for (int i = 0; i < ROW_SIZE; i++) {
 
-        for (Generator generator : plugin.getPlayerCache().getGenerators(player)) {
+            if (i >= generators.length) {
+                getInventory().setItem(slot + ROW_SIZE, empty);
+                getInventory().setItem(slot++, empty);
+                continue;
+            }
 
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "You may only select one generator!"));
 
-            for (Map.Entry<XMaterial, Float> items : generator.getItems().entrySet()) {
+            for (Map.Entry<XMaterial, Float> items : generators[i].getItems().entrySet()) {
+                if (items.getValue() == 0) continue;
                 lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(items.getKey().parseItem()) + ":&7 " + items.getValue().floatValue() + "%"));
             }
 
             Material material = XMaterial.COBBLESTONE.parseMaterial();
 
-            float max = Collections.max(generator.getItems().values());
+            float max = Collections.max(generators[i].getItems().values());
 
-            for (Map.Entry<XMaterial, Float> items : generator.getItems().entrySet()) {
+            for (Map.Entry<XMaterial, Float> items : generators[i].getItems().entrySet()) {
                 if (items.getValue() == max) {
                     material = items.getKey().parseMaterial();
                 }
             }
 
-            String name = generator.getName();
-            if (plugin.getPlayerCache().getSelected(player) == generator) {
+            String name = generators[i].getName();
+
+            if (plugin.getPlayerCache().getSelected(player) == generators[i]) {
+                getInventory().setItem(slot + ROW_SIZE, enabled);
                 getInventory().setItem(slot++, Util.setLore(Util.setName(new ItemStack(material), "&a&l" + name.toUpperCase()), lore));
             } else {
+                getInventory().setItem(slot + ROW_SIZE, disabled);
                 getInventory().setItem(slot++, Util.setLore(Util.setName(new ItemStack(material), "&c&l" + name.toUpperCase()), lore));
             }
+
         }
 
         getInventory().setItem(getInventory().getSize() - MID_SLOT, Util.setName(new ItemStack(Material.BARRIER), ChatColor.DARK_RED + "Exit"));
-
-        for (int i = slot; i < getInventory().getSize() - ROW_SIZE; i++) {
-            getInventory().setItem(i, empty);
-        }
 
         for (int i = getInventory().getSize() - ROW_SIZE; i < getInventory().getSize(); i++) {
             if (getInventory().getItem(i) == null) {

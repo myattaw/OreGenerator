@@ -41,6 +41,7 @@ public class GeneratorMenu extends MenuBuilder {
 
         int slot = ROW_SIZE;
         for (Map.Entry<XMaterial, Float> items : generator.getItems().entrySet()) {
+
             ItemStack item = items.getKey().parseItem();
             List<String> lore = Arrays.asList(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify percentages"), ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(items.getKey()) + "%");
             Util.setLore(item,  lore);

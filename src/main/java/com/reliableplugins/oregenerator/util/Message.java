@@ -1,6 +1,7 @@
 package com.reliableplugins.oregenerator.util;
 
 public enum Message {
+
     LIST_GENERATORS(Util.color("&7Generators: {LIST}")),
     GENERATOR_CREATED(Util.color("&7New generator created: {NAME}")),
     GENERATOR_REMOVED(Util.color("&7Generator removed: {NAME}")),
@@ -9,6 +10,8 @@ public enum Message {
     HELP_CREATE_GENERATOR(Util.color("&cInvalid usage; /oregenerator create <name>")),
     HELP_REMOVE_GENERATOR(Util.color("&cInvalid usage; /oregenerator remove <name>")),
 
+    SELECT_ERROR(Util.color("&cYou do not have permission to use this generator")),
+    SELECT_GENERATOR(Util.color("&aYou have selected the %s generator")),
 
     ERROR_PCTG_INVALID(Util.color("&cInvalid percentage, enter a number")),
     ERROR_PCTG_HIGH(Util.color("&cThat percentage is too high (must be <= {MAX})")),

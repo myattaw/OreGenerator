@@ -61,6 +61,7 @@ public class MainMenu extends MenuBuilder {
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify generator."));
 
             for (Map.Entry<XMaterial, Float> percents : generators.getValue().getItems().entrySet()) {
+                if (percents.getValue() == 0) continue;
                 lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(percents.getKey().parseItem()) + ":&7 " + percents.getValue().floatValue() + "%"));
             }
 

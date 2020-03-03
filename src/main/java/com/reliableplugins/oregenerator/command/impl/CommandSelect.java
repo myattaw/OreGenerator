@@ -21,12 +21,26 @@ public class CommandSelect extends AbstractCommand {
 
         List<Generator> generators = getPlugin().getPlayerCache().getGenerators(player);
 
+        if(args.length == 1) {
+            if (getPlugin().getGenerators().containsKey(args[0].toLowerCase())) {
+                Generator generator = getPlugin().getGenerators().get(args[0].toLowerCase());
+                if (args[0].equalsIgnoreCase(generator.getName()) && player.hasPermission(generator.getPermission())) {
+                    sender.sendMessage(String.format(Message.SELECT_GENERATOR.getMessage(), generator.getName()));
+                    getPlugin().getPlayerCache().setGenerator(player, generator);
+                } else {
+                    // no permission
+                    sender.sendMessage(String.format(Message.SELECT_ERROR.getMessage(), generator.getName()));
+                }
+            }
+            return;
+        }
+
         if (generators == null || generators.size() != getPlugin().getGenerators().values().size()) {
             getPlugin().getPlayerCache().addPlayer(player);
         }
 
         int rows = (int) (1 + Math.ceil((getPlugin().getPlayerCache().getGenerators(player).size() - 1) / 9));
-        player.openInventory(new SelectorMenu(player, rows + 2, getPlugin()).init().getInventory());
+        player.openInventory(new SelectorMenu(player, rows + 3, getPlugin()).init().getInventory());
     }
 
 }

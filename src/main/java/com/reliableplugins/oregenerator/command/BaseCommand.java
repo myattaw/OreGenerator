@@ -39,6 +39,7 @@ public class BaseCommand implements CommandExecutor {
                 return true;
             }
             commandSender.sendMessage(Message.ERROR_PERMISSION.getMessage());
+            return true;
         }
 
         for (AbstractCommand subcommand : subcommands.values()) {
