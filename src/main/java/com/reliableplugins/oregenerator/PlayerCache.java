@@ -1,6 +1,7 @@
 package com.reliableplugins.oregenerator;
 
 import com.reliableplugins.oregenerator.generator.Generator;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,8 +43,13 @@ public class PlayerCache implements Listener {
         for (Generator generator : plugin.getGenerators().values()) {
             if (player.hasPermission("oregenerator.use." + generator.getName())) {
                 generators.add(generator);
+                players.put(player.getUniqueId(), generator);
             }
-            players.put(player.getUniqueId(), generator);
+
+            if (!players.containsKey(player.getUniqueId())) {
+                players.put(player.getUniqueId(), plugin.getGenerators().values().iterator().next());
+            }
+
         }
         this.generators.put(player.getUniqueId(), generators);
     }

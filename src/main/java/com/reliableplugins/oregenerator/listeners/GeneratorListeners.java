@@ -45,8 +45,16 @@ public class GeneratorListeners implements Listener {
 
             BlockFace blockFace = event.getFace();
             if (materials.contains(block.getRelative(blockFace).getType()) && materials.contains(block.getRelative(blockFace.getOppositeFace()).getType())) {
-                Generator generator = plugin.getGenerators().get("default");
+
+                Generator generator;
+                if (plugin.getGenerators().containsKey("default")) {
+                    generator = plugin.getGenerators().get("default");
+                } else {
+                    generator = plugin.getGenerators().values().iterator().next();
+                }
+
                 block.setType(generator.generateRandomMaterial().parseMaterial());
+
                 event.setCancelled(true);
                 if (!generators.containsKey(block.getLocation())) {
                     generators.put(block.getLocation(), generator);
