@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class OreGenerator extends JavaPlugin implements Listener {
+public class OreGenerator extends JavaPlugin {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("OreGenerator Thread").build());
 
@@ -42,7 +42,9 @@ public class OreGenerator extends JavaPlugin implements Listener {
             playerCache.addPlayer(p);
         }
 
-        getServer().getPluginManager().registerEvents(new GeneratorListeners(this), this);
+        GeneratorListeners generatorListeners = new GeneratorListeners(this);
+
+        getServer().getPluginManager().registerEvents(generatorListeners, this);
         getServer().getPluginManager().registerEvents(new InventoryListeners(), this);
 
         new BaseCommand(this);

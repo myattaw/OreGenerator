@@ -75,4 +75,7 @@ public class PlayerCache implements Listener {
         return generators.get(player.getUniqueId());
     }
 
+    public Map<UUID, Location> getLocations() {
+        return locations;
+    }
 }
