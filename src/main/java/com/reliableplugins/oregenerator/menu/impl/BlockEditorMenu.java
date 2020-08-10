@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BlockEditorMenu extends MenuBuilder {
 
@@ -53,8 +54,8 @@ public class BlockEditorMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-        for (XMaterial material : generator.getItems().keySet()) {
-            ItemStack itemStack = material.parseItem();
+        for (String material : generator.getItems().keySet()) {
+            ItemStack itemStack = XMaterial.valueOf(material).parseItem();
             Util.setLore(itemStack, lore);
             getInventory().setItem(slot++, Util.setName(itemStack, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(itemStack)));
         }
@@ -88,9 +89,9 @@ public class BlockEditorMenu extends MenuBuilder {
         Generator generator = plugin.getGenerators().get(name);
         ItemStack itemStack = event.getCurrentItem();
 
-        XMaterial xMaterial = XMaterial.requestXMaterial(itemStack.getType().name(), (byte) itemStack.getDurability());
+        XMaterial xMaterial = XMaterial.matchXMaterial(itemStack);
 
-        if(itemStack == null || inventory == null) return;
+        if (itemStack == null || inventory == null) return;
 
         if (inventory == player.getInventory()) {
 
@@ -100,7 +101,7 @@ public class BlockEditorMenu extends MenuBuilder {
                 init();
             }
         } else {
-            if (generator.getItems().containsKey(xMaterial)) {
+            if (generator.getItems().containsKey(xMaterial.name())) {
                 generator.removeItem(xMaterial);
                 init();
             }
@@ -110,10 +111,8 @@ public class BlockEditorMenu extends MenuBuilder {
     @Override
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        plugin.getExecutorService().submit(() -> {
-            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
-            player.openInventory(new GeneratorMenu(plugin, generator, rows + 2).init().getInventory());
-        });
+        GeneratorMenu generatorMenu = plugin.getGeneratorMenu(generator).init();
+        Bukkit.getScheduler().runTaskLater(plugin, () ->  player.openInventory(generatorMenu.getInventory()), 0);
     }
 
     @Override

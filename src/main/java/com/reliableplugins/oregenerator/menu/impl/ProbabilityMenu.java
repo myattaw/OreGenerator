@@ -6,6 +6,7 @@ import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Message;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -54,7 +56,7 @@ public class ProbabilityMenu extends MenuBuilder {
         ItemStack rem = XMaterial.RED_STAINED_GLASS_PANE.parseItem();
 
         ItemStack item = material.parseItem();
-        Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(material) + "%"));
+        Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(material.name()) + "%"));
 
         getInventory().setItem(10, Util.setName(add, "&7Add &a[+5.0%]"));
         getInventory().setItem(11, Util.setName(add, "&7Add &a[+1.0%]"));
@@ -80,7 +82,7 @@ public class ProbabilityMenu extends MenuBuilder {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
 
-        float chance = generator.getItems().get(material);
+        float chance = generator.getItems().get(material.name());
 
         Player player = (Player) event.getWhoClicked();
 
@@ -106,7 +108,7 @@ public class ProbabilityMenu extends MenuBuilder {
             return;
         }
 
-        generator.getItems().put(material, chance);
+        generator.getItems().put(material.name(), chance);
 
         // Save new probability into config
         plugin.getMaterialsConfig().save();
@@ -118,8 +120,8 @@ public class ProbabilityMenu extends MenuBuilder {
 
     private float getPercent() {
         float percent = 0;
-        for (Map.Entry<XMaterial, Float> entry : generator.getItems().entrySet()) {
-            if (entry.getKey().equals(material)) continue;
+        for (Map.Entry<String, Float> entry : generator.getItems().entrySet()) {
+            if (entry.getKey().equals(material.name())) continue;
             percent += entry.getValue();
         }
         return percent;
@@ -128,10 +130,8 @@ public class ProbabilityMenu extends MenuBuilder {
     @Override
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        plugin.getExecutorService().submit(() -> {
-            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
-            player.openInventory(new GeneratorMenu(plugin, generator, rows + 2).init().getInventory());
-        });
+        plugin.getGeneratorMenu(generator).init();
+        Bukkit.getScheduler().runTaskLater(plugin, () -> player.openInventory(plugin.getGeneratorMenu(generator).getInventory()), 0);
     }
 
     @Override

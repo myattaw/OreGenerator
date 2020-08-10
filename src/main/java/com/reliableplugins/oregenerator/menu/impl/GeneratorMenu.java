@@ -40,9 +40,9 @@ public class GeneratorMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-        for (Map.Entry<XMaterial, Float> items : generator.getItems().entrySet()) {
+        for (Map.Entry<String, Float> items : generator.getItems().entrySet()) {
 
-            ItemStack item = items.getKey().parseItem();
+            ItemStack item = XMaterial.valueOf(items.getKey()).parseItem();
             List<String> lore = Arrays.asList(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify percentages"), ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(items.getKey()) + "%");
             Util.setLore(item,  lore);
             getInventory().setItem(slot++, Util.setName(item, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(item)));
@@ -73,7 +73,7 @@ public class GeneratorMenu extends MenuBuilder {
 
         Player player = (Player) event.getWhoClicked();
 
-        XMaterial clickedMaterial = XMaterial.fromMaterial(event.getCurrentItem().getType());
+        XMaterial clickedMaterial = XMaterial.matchXMaterial(event.getCurrentItem().getType());
 
         if (event.getSlot() == (getInventory().getSize() - MID_SLOT)) {
             player.closeInventory();
@@ -92,7 +92,7 @@ public class GeneratorMenu extends MenuBuilder {
         }
 
         // If material is already a generator item
-        if (generator.getItems().containsKey(clickedMaterial)) {
+        if (generator.getItems().containsKey(clickedMaterial.name())) {
             player.openInventory(new ProbabilityMenu(generator, clickedMaterial, plugin).init().getInventory());
         }
     }

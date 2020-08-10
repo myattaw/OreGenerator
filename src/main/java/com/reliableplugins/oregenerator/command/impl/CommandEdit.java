@@ -24,10 +24,7 @@ public class CommandEdit extends AbstractCommand {
                 generator = getPlugin().getGenerators().get(args[0]);
 
                 int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / 9));
-                player.openInventory(
-                        new GeneratorMenu(getPlugin(), generator, rows)
-                        .init()
-                                .getInventory());
+                getPlugin().setGeneratorMenu(generator, new GeneratorMenu(getPlugin(), generator, rows).init());
 
             // If arg isn't a valid generator, throw error
             } else {

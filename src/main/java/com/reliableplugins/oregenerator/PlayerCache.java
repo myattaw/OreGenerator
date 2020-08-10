@@ -52,6 +52,7 @@ public class PlayerCache implements Listener {
 
         }
         this.generators.put(player.getUniqueId(), generators);
+
     }
 
     public void setGenerator(Player player, Generator generator) {

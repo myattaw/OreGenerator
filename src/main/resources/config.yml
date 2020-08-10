@@ -2,6 +2,10 @@
 disabled-worlds:
   - "world_nether"
 
+upgrade-menu:
+  title: "&7Upgrade Menu"
+
+
 generator-item:
   default:
     name: "&a&lDEFAULT &7&lGENERATOR"

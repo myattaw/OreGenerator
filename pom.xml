@@ -45,53 +45,95 @@
             <version>3.0.8.2</version>
         </dependency>
 
+        <!-- Spigots -->
+        <dependency>
+            <groupId>org.spigotmc.......</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1_16_R1</version>
+            <systemPath>${project.basedir}/lib/spigot1_16_R1.jar</systemPath>
+        </dependency>
+
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.8.8</version>
-            <systemPath>${project.basedir}/lib/spigot1.8.8.jar</systemPath>
+            <version>1_8_R3</version>
+            <systemPath>${project.basedir}/lib/spigot1_8_R3.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc..........</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1_9_R1</version>
+            <systemPath>${project.basedir}/lib/spigot1_9_R1.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc.........</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1_9_R2</version>
+            <systemPath>${project.basedir}/lib/spigot1_9_R2.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc........</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1_10_R1</version>
+            <systemPath>${project.basedir}/lib/spigot1_10_R1.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc.</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.11</version>
-            <systemPath>${project.basedir}/lib/spigot1.11.jar</systemPath>
+            <version>1_11_R1</version>
+            <systemPath>${project.basedir}/lib/spigot1_11_R1.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc..</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.12</version>
-            <systemPath>${project.basedir}/lib/spigot1.12.jar</systemPath>
+            <version>1_12_R1</version>
+            <systemPath>${project.basedir}/lib/spigot1_12_R1.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc...</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.13</version>
-            <systemPath>${project.basedir}/lib/spigot1.13.jar</systemPath>
+            <version>1_13_R1</version>
+            <systemPath>${project.basedir}/lib/spigot1_13_R1.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc....</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.13.2</version>
-            <systemPath>${project.basedir}/lib/spigot1.13.2.jar</systemPath>
+            <version>1_13_R2</version>
+            <systemPath>${project.basedir}/lib/spigot1_13_R2.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc.....</groupId>
             <artifactId>spigot</artifactId>
             <scope>system</scope>
-            <version>1.14.4</version>
-            <systemPath>${project.basedir}/lib/spigot1.14.4.jar</systemPath>
+            <version>1_14_R1</version>
+            <systemPath>${project.basedir}/lib/spigot1_14_R1.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc......</groupId>
+            <artifactId>spigot</artifactId>
+            <scope>system</scope>
+            <version>1_15_R1</version>
+            <systemPath>${project.basedir}/lib/spigot1_15_R1.jar</systemPath>
+        </dependency>
+        <!-- End Spigots -->
 
 
     </dependencies>

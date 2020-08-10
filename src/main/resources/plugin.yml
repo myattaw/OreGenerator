@@ -1,5 +1,6 @@
 name: OreGenerator
 main: com.reliableplugins.oregenerator.OreGenerator
+api-version: 1.13
 version: 1.0
 author: Rages
 commands:

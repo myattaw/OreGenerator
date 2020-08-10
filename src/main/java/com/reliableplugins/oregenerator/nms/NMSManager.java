@@ -28,6 +28,12 @@ public class NMSManager {
             case "v1_14_R1":
                 addVersion(new Version_1_14_R1());
                 break;
+            case "v1_15_R1":
+                addVersion(new Version_1_15_R1());
+                break;
+            case "v1_16_R1":
+                addVersion(new Version_1_16_R1());
+                break;
             default:
                 addVersion(new Version_1_8_R3());
         }

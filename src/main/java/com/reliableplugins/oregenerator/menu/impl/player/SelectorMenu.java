@@ -23,12 +23,17 @@ public class SelectorMenu extends MenuBuilder {
 
     private Map<Integer, Generator> generators = new HashMap<>();
 
+    private String DISABLED = ChatColor.RED + ChatColor.BOLD.toString();
+    private String ENABLED = ChatColor.GREEN + ChatColor.BOLD.toString();
+
     public SelectorMenu(Player player, int rows, OreGenerator plugin) {
         super("Generator Selector", rows, plugin);
         this.plugin = plugin;
         this.player = player;
-        for (int i = 0; i < plugin.getPlayerCache().getGenerators(player).size(); i++) {
-            generators.put(ROW_SIZE + i, plugin.getPlayerCache().getGenerators(player).get(i));
+
+        List<Generator> playerGenerators = plugin.getPlayerCache().getGenerators(player);
+        for (int i = 0; i < playerGenerators.size(); i++) {
+            generators.put(ROW_SIZE + i, playerGenerators.get(i));
         }
     }
 
@@ -40,8 +45,8 @@ public class SelectorMenu extends MenuBuilder {
         ItemStack border = Util.setName(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem(), " ");
         ItemStack empty = Util.setName(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem(), " ");
 
-        ItemStack enabled = Util.setName(XMaterial.LIME_STAINED_GLASS_PANE.parseItem(), "&a&lENABLED");
-        ItemStack disabled = Util.setName(XMaterial.RED_STAINED_GLASS_PANE.parseItem(), "&c&lDISABLED");
+        ItemStack enabled = Util.setName(XMaterial.LIME_STAINED_GLASS_PANE.parseItem(), ENABLED +  "ENABLED");
+        ItemStack disabled = Util.setName(XMaterial.RED_STAINED_GLASS_PANE.parseItem(), DISABLED + "DISABLED");
 
         int slot = ROW_SIZE;
 
@@ -64,18 +69,18 @@ public class SelectorMenu extends MenuBuilder {
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "You may only select one generator!"));
 
-            for (Map.Entry<XMaterial, Float> items : generators[i].getItems().entrySet()) {
+            for (Map.Entry<String, Float> items : generators[i].getItems().entrySet()) {
                 if (items.getValue() == 0) continue;
-                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(items.getKey().parseItem()) + ":&7 " + items.getValue().floatValue() + "%"));
+                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(XMaterial.valueOf(items.getKey()).parseItem()) + ":&7 " + items.getValue().floatValue() + "%"));
             }
 
             Material material = XMaterial.COBBLESTONE.parseMaterial();
 
             float max = Collections.max(generators[i].getItems().values());
 
-            for (Map.Entry<XMaterial, Float> items : generators[i].getItems().entrySet()) {
+            for (Map.Entry<String, Float> items : generators[i].getItems().entrySet()) {
                 if (items.getValue() == max) {
-                    material = items.getKey().parseMaterial();
+                    material = XMaterial.valueOf(items.getKey()).parseMaterial();
                 }
             }
 
@@ -83,10 +88,10 @@ public class SelectorMenu extends MenuBuilder {
 
             if (plugin.getPlayerCache().getSelected(player) == generators[i]) {
                 getInventory().setItem(slot + ROW_SIZE, enabled);
-                getInventory().setItem(slot++, Util.setLore(Util.setName(new ItemStack(material), "&a&l" + name.toUpperCase()), lore));
+                getInventory().setItem(slot++, Util.setLore(Util.setName(new ItemStack(material), ENABLED + name.toUpperCase()), lore));
             } else {
                 getInventory().setItem(slot + ROW_SIZE, disabled);
-                getInventory().setItem(slot++, Util.setLore(Util.setName(new ItemStack(material), "&c&l" + name.toUpperCase()), lore));
+                getInventory().setItem(slot++, Util.setLore(Util.setName(new ItemStack(material), DISABLED + name.toUpperCase()), lore));
             }
 
         }

@@ -24,9 +24,9 @@ public class CommandGive extends AbstractCommand {
 
         float max = Collections.max(generator.getItems().values());
 
-        for (Map.Entry<XMaterial, Float> items : generator.getItems().entrySet()) {
+        for (Map.Entry<String, Float> items : generator.getItems().entrySet()) {
             if (items.getValue() == max) {
-                player.getInventory().addItem(new ItemStack(items.getKey().parseItem()));
+                player.getInventory().addItem(new ItemStack(XMaterial.valueOf(items.getKey()).parseItem()));
                 return;
             }
         }

@@ -49,9 +49,9 @@ public class MainMenu extends MenuBuilder {
 
             float max = Collections.max(generators.getValue().getItems().values());
 
-            for (Map.Entry<XMaterial, Float> items : generators.getValue().getItems().entrySet()) {
+            for (Map.Entry<String, Float> items : generators.getValue().getItems().entrySet()) {
                 if (items.getValue() == max) {
-                    material = items.getKey().parseMaterial();
+                    material = XMaterial.valueOf(items.getKey()).parseMaterial();
                 }
             }
 
@@ -60,9 +60,9 @@ public class MainMenu extends MenuBuilder {
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify generator."));
 
-            for (Map.Entry<XMaterial, Float> percents : generators.getValue().getItems().entrySet()) {
+            for (Map.Entry<String, Float> percents : generators.getValue().getItems().entrySet()) {
                 if (percents.getValue() == 0) continue;
-                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(percents.getKey().parseItem()) + ":&7 " + percents.getValue().floatValue() + "%"));
+                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(XMaterial.valueOf(percents.getKey()).parseItem()) + ":&7 " + percents.getValue().floatValue() + "%"));
             }
 
             lore.add("");
@@ -104,7 +104,8 @@ public class MainMenu extends MenuBuilder {
         if (plugin.getGenerators().containsKey(itemName)) {
             Generator generator = plugin.getGenerators().get(itemName);
             int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
-            player.openInventory(new GeneratorMenu(plugin, generator, rows + 2).init().getInventory());
+            plugin.setGeneratorMenu(generator, new GeneratorMenu(plugin, generator, rows + 2).init());
+            player.openInventory(plugin.getGeneratorMenu(generator).getInventory());
         }
 
     }
