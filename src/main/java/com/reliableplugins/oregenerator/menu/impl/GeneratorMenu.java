@@ -23,9 +23,12 @@ public class GeneratorMenu extends MenuBuilder {
     private OreGenerator plugin;
     private Generator generator;
 
-    public GeneratorMenu(OreGenerator plugin, Generator generator, int rows) {
+    private Map<XMaterial, Float> items;
+
+    public GeneratorMenu(OreGenerator plugin, Generator generator, Map<XMaterial, Float> items, int rows) {
         super("Select a block", rows, plugin);
         this.plugin = plugin;
+        this.items = items;
         this.generator = generator;
     }
 
@@ -40,10 +43,10 @@ public class GeneratorMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-        for (Map.Entry<String, Float> items : generator.getItems().entrySet()) {
+        for (Map.Entry<XMaterial, Float> items : items.entrySet()) {
 
-            ItemStack item = XMaterial.valueOf(items.getKey()).parseItem();
-            List<String> lore = Arrays.asList(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify percentages"), ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(items.getKey()) + "%");
+            ItemStack item = items.getKey().parseItem();
+            List<String> lore = Arrays.asList(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify percentages"), ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + items.getValue() + "%");
             Util.setLore(item,  lore);
             getInventory().setItem(slot++, Util.setName(item, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(item)));
         }
@@ -87,13 +90,13 @@ public class GeneratorMenu extends MenuBuilder {
         }
 
         if (event.getSlot() == (getInventory().getSize() - 1)) {
-            player.openInventory(new BlockEditorMenu(generator.getName(), 5, plugin).init().getInventory());
+            player.openInventory(new BlockEditorMenu(generator, items,5, plugin).init().getInventory());
             return;
         }
 
         // If material is already a generator item
-        if (generator.getItems().containsKey(clickedMaterial.name())) {
-            player.openInventory(new ProbabilityMenu(generator, clickedMaterial, plugin).init().getInventory());
+        if (items.containsKey(clickedMaterial)) {
+            player.openInventory(new ProbabilityMenu(generator, items, clickedMaterial, plugin).init().getInventory());
         }
     }
 

@@ -22,11 +22,11 @@ public class CommandGive extends AbstractCommand {
 
         Generator generator = getPlugin().getGenerators().get("default");
 
-        float max = Collections.max(generator.getItems().values());
+        float max = Collections.max(generator.getFirst().getItems().values());
 
-        for (Map.Entry<String, Float> items : generator.getItems().entrySet()) {
+        for (Map.Entry<XMaterial, Float> items : generator.getFirst().getItems().entrySet()) {
             if (items.getValue() == max) {
-                player.getInventory().addItem(new ItemStack(XMaterial.valueOf(items.getKey()).parseItem()));
+                player.getInventory().addItem(new ItemStack(items.getKey().parseItem()));
                 return;
             }
         }

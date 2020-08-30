@@ -25,9 +25,9 @@ public class BaseCommand implements CommandExecutor {
         addCommand(new CommandReload(), plugin);
         addCommand(new CommandCreate(), plugin);
         addCommand(new CommandRemove(), plugin);
+        addCommand(new CommandLevel(), plugin);
         addCommand(new CommandSelect(), plugin);
         addCommand(new CommandGive(), plugin);
-        addCommand(new CommandUpgrade(), plugin);
         plugin.getCommand("oregenerator").setExecutor(this);
     }
 

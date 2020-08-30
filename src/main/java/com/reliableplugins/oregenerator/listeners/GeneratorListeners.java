@@ -3,6 +3,7 @@ package com.reliableplugins.oregenerator.listeners;
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import com.reliableplugins.oregenerator.util.pair.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -50,7 +51,7 @@ public class GeneratorListeners implements Listener {
                 generator = plugin.getGenerators().values().iterator().next();
             }
 
-            XMaterial material = generator.generateRandomMaterial();
+            XMaterial material = generator.getFirst().generateRandomMaterial();
 
             if (blocks.containsKey(block.getLocation())) {
                 material = blocks.get(block.getLocation());
@@ -75,13 +76,13 @@ public class GeneratorListeners implements Listener {
         if (!generators.containsKey(block.getLocation())) return;
 
         Player player = event.getPlayer();
-        Generator selected = plugin.getPlayerCache().getSelected(player);
+        Pair<Generator, Integer> selected = plugin.getPlayerCache().getSelected(player);
 
-        if (generators.get(block.getLocation()) != selected) {
-            generators.put(block.getLocation(), selected);
+        if (generators.get(block.getLocation()) != selected.getKey()) {
+            generators.put(block.getLocation(), selected.getKey());
         }
 
-        XMaterial random = selected.generateRandomMaterial();
+        XMaterial random = selected.getKey().getByLevel(selected.getValue()).generateRandomMaterial();
         blocks.put(block.getLocation(), random);
     }
 

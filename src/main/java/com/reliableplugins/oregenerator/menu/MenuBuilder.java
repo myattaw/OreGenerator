@@ -1,5 +1,6 @@
 package com.reliableplugins.oregenerator.menu;
 
+import com.reliableplugins.oregenerator.OreGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -8,7 +9,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class MenuBuilder<T> implements InventoryHolder {
 
@@ -19,15 +19,19 @@ public abstract class MenuBuilder<T> implements InventoryHolder {
     public final int MID_SLOT = 5;
     public final int ROW_SIZE = 9;
 
-    public MenuBuilder(String title, int rows, JavaPlugin plugin) {
+    private OreGenerator plugin;
+
+    public MenuBuilder(String title, int rows, OreGenerator plugin) {
         this.title = title;
         this.rows = rows;
         this.inventory = Bukkit.createInventory(this, 9 * rows, getTitle());
+        this.plugin = plugin;
     }
 
-    public MenuBuilder(String title, JavaPlugin plugin) {
+    public MenuBuilder(String title, OreGenerator plugin) {
         this.title = title;
         this.inventory = Bukkit.createInventory(this, InventoryType.HOPPER, getTitle());
+        this.plugin = plugin;
     }
 
 
@@ -45,6 +49,10 @@ public abstract class MenuBuilder<T> implements InventoryHolder {
 
     public void setRows(int rows) {
         this.rows = rows;
+    }
+
+    public OreGenerator getPlugin() {
+        return plugin;
     }
 
     public abstract T init();

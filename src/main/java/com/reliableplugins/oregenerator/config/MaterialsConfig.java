@@ -15,7 +15,7 @@ import java.util.logging.Level;
 
 public class MaterialsConfig {
 
-    private Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+    private Gson gson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().disableHtmlEscaping().create();
     private OreGenerator plugin;
 
     public MaterialsConfig(OreGenerator plugin) {
@@ -26,7 +26,7 @@ public class MaterialsConfig {
         try (FileWriter writer = new FileWriter(plugin.getDataFolder() + File.separator + "generators.json")) {
             this.gson.toJson(plugin.getGenerators(), writer);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to save generator data!: " + e.getMessage());
+            plugin.getLogger().log(Level.SEVERE, "Failed to save generator data! " + e.getMessage());
         }
     }
 

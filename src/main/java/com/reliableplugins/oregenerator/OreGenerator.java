@@ -2,6 +2,8 @@ package com.reliableplugins.oregenerator;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.reliableplugins.oregenerator.command.BaseCommand;
+import com.reliableplugins.oregenerator.config.CustomFile;
+import com.reliableplugins.oregenerator.config.FileManager;
 import com.reliableplugins.oregenerator.config.MaterialsConfig;
 import com.reliableplugins.oregenerator.generator.Generator;
 import com.reliableplugins.oregenerator.hook.HookManager;
@@ -25,18 +27,23 @@ public class OreGenerator extends JavaPlugin {
     private Map<String, Generator> generators = new HashMap<>();
     private PlayerCache playerCache;
 
-    private HookManager hookManager;
-    private NMSManager nmsManager;
     private MaterialsConfig materialsConfig;
+
     private NMSHandler nmsHandler;
+
+    private NMSManager nmsManager;
+    private FileManager fileManager;
+    private HookManager hookManager;
 
     private Map<Generator, GeneratorMenu> generatorMenus = new HashMap<>();
 
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-//        this.hookManager = new HookManager(this);
+
+        this.hookManager = new HookManager(this);
         this.nmsManager = new NMSManager(this);
+        this.fileManager = new FileManager(this);
 
         GeneratorListeners generatorListeners = new GeneratorListeners(this);
 
@@ -53,9 +60,8 @@ public class OreGenerator extends JavaPlugin {
 
         this.playerCache = new PlayerCache(this);
 
-        for(Player p : this.getServer().getOnlinePlayers())
-        {
-            playerCache.addPlayer(p);
+        for (Player player : this.getServer().getOnlinePlayers()) {
+            playerCache.addPlayer(player);
         }
 
     }
@@ -63,6 +69,7 @@ public class OreGenerator extends JavaPlugin {
     @Override
     public void onDisable() {
         materialsConfig.save();
+        fileManager.getFiles().forEach(CustomFile::saveConfig);
     }
 
     public void setGeneratorMenu(Generator generator, GeneratorMenu generatorMenu) {
@@ -73,8 +80,16 @@ public class OreGenerator extends JavaPlugin {
         generatorMenus.put(generator, generatorMenu);
     }
 
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
     public GeneratorMenu getGeneratorMenu(Generator generator) {
         return generatorMenus.get(generator);
+    }
+
+    public HookManager getHookManager() {
+        return hookManager;
     }
 
     public PlayerCache getPlayerCache() {

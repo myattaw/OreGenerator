@@ -2,9 +2,11 @@ package com.reliableplugins.oregenerator.menu.impl;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
+import com.reliableplugins.oregenerator.generator.GeneratorItems;
 import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -14,17 +16,16 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MainMenu extends MenuBuilder {
 
     private OreGenerator plugin;
 
+    private Map<Integer, Map<XMaterial, Float>> slotItems = new HashMap<>();
+
     public MainMenu(int rows, OreGenerator plugin) {
-        super("Select a generator", rows, plugin);
+        super(plugin.getConfig().getString("gui-menus.titles.main-menu"), rows, plugin);
         this.plugin = plugin;
     }
 
@@ -42,36 +43,32 @@ public class MainMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
+        Material material = XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial();
 
-        for (Map.Entry<String, Generator> generators : plugin.getGenerators().entrySet()) {
+        for (Map.Entry<String, Generator> entry : plugin.getGenerators().entrySet()) {
 
-            Material material = XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial();
+            Generator generator = entry.getValue();
 
-            float max = Collections.max(generators.getValue().getItems().values());
+            for (int level = 1; level <= generator.getMaxLevel(); level++) {
+                float max = Collections.max(generator.getByLevel(level).getItems().values());
 
-            for (Map.Entry<String, Float> items : generators.getValue().getItems().entrySet()) {
-                if (items.getValue() == max) {
-                    material = XMaterial.valueOf(items.getKey()).parseMaterial();
+                for (Map.Entry<XMaterial, Float> items : generator.getByLevel(level).getItems().entrySet()) {
+                    if (items.getValue() == max) {
+                        material = items.getKey().parseMaterial();
+                    }
                 }
+
+                String itemName = Util.replace(plugin.getConfig().getString("main-menu.generator.name"), new AbstractMap.SimpleEntry<>("name", generator.getName()), new AbstractMap.SimpleEntry<>("level", Util.intToRoman(level)));
+                ItemStack itemStack = Util.setName(new ItemStack(material), itemName);
+
+                List<String> lore = plugin.getConfig().getStringList("main-menu.generator.lore");
+                slotItems.put(slot, generator.getByLevel(level).getItems());
+                getInventory().setItem(slot++, Util.setLore(itemStack, Util.updateLore(lore, new AbstractMap.SimpleEntry<>("max", generator.getMaxLevel()), new AbstractMap.SimpleEntry<>("name", generator.getName()))));
             }
 
-            ItemStack itemStack = Util.setName(new ItemStack(material), ChatColor.GREEN + (ChatColor.BOLD + generators.getKey().toUpperCase()));
-
-            List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "Click to modify generator."));
-
-            for (Map.Entry<String, Float> percents : generators.getValue().getItems().entrySet()) {
-                if (percents.getValue() == 0) continue;
-                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(XMaterial.valueOf(percents.getKey()).parseItem()) + ":&7 " + percents.getValue().floatValue() + "%"));
-            }
-
-            lore.add("");
-            lore.add(ChatColor.DARK_GREEN + "Permission:");
-            lore.add(ChatColor.GRAY + "oregenerator.use." + generators.getKey().toLowerCase());
-            getInventory().setItem(slot++,  Util.setLore(itemStack, lore));
         }
 
-        getInventory().setItem(getInventory().getSize() - MID_SLOT, Util.setName(new ItemStack(Material.BARRIER), ChatColor.DARK_RED + "Exit"));
+        getInventory().setItem(getInventory().getSize() - MID_SLOT, Util.setName(new ItemStack(Material.BARRIER), plugin.getConfig().getString("gui-menus.buttons.exit-name")));
 
         for (int i = slot; i < getInventory().getSize() - ROW_SIZE; i++) {
             getInventory().setItem(i, empty);
@@ -101,10 +98,12 @@ public class MainMenu extends MenuBuilder {
 
         String itemName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName().toLowerCase());
 
-        if (plugin.getGenerators().containsKey(itemName)) {
+        Map<XMaterial, Float> items = slotItems.get(event.getSlot());
+
+        if (items != null) {
             Generator generator = plugin.getGenerators().get(itemName);
-            int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / ROW_SIZE));
-            plugin.setGeneratorMenu(generator, new GeneratorMenu(plugin, generator, rows + 2).init());
+            int rows = (int) (1 + Math.ceil((items.size() - 1) / ROW_SIZE));
+            plugin.setGeneratorMenu(generator, new GeneratorMenu(plugin, generator, items, rows + 2).init());
             player.openInventory(plugin.getGeneratorMenu(generator).getInventory());
         }
 

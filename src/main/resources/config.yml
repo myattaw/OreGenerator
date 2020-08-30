@@ -2,9 +2,39 @@
 disabled-worlds:
   - "world_nether"
 
-upgrade-menu:
-  title: "&7Upgrade Menu"
+main-menu:
+  blocks: "&a\u27A5 &2[BLOCK]: &7[PERCENT]%"
+  generator:
+    name: "&a&l[NAME] &7(Level [LEVEL])"
+    lore:
+      - "&7&o(Click to modify items)"
+      - ""
+      - "&2&lLevels"
+      - "&a\u27A5 &7Max Levels: &n[MAX]"
+      - ""
+      - "&2&lPermission:"
+      - "&7oregenerator.use.[NAME]"
 
+select-menu:
+  selected: "&a&l[NAME] &7(Selected)"
+  disabled: "&c&l[NAME]"
+  locked: "&e&lCLICK TO &nUNLOCK"
+
+level-cost:
+  default:
+    2: 10000
+  vip:
+    2: 20000
+    3: 30000
+
+gui-menus:
+  titles:
+    main-menu: "&8Generator Menu"
+    edit-menu: "&8Edit Blocks Menu"
+    modify-menu: "&8Modify Menu"
+  buttons:
+    exit-name: "&4Exit"
+    edit-name: "&aEdit Blocks"
 
 generator-item:
   default:

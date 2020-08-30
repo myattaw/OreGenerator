@@ -27,9 +27,12 @@ public class ProbabilityMenu extends MenuBuilder {
     private List<String> lore = new ArrayList<>();
     private Map<Integer, Float> slotValue = new HashMap<>();
 
-    public ProbabilityMenu(Generator generator, XMaterial material, OreGenerator plugin) {
+    private Map<XMaterial, Float> items;
+
+    public ProbabilityMenu(Generator generator,  Map<XMaterial, Float> items, XMaterial material, OreGenerator plugin) {
         super("Modify percentages", 3, plugin);
         this.material = material;
+        this.items = items;
         this.generator = generator;
         this.plugin = plugin;
 
@@ -56,7 +59,7 @@ public class ProbabilityMenu extends MenuBuilder {
         ItemStack rem = XMaterial.RED_STAINED_GLASS_PANE.parseItem();
 
         ItemStack item = material.parseItem();
-        Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + generator.getItems().get(material.name()) + "%"));
+        Util.setLore(item, Arrays.asList(ChatColor.GRAY + "Current percent: " + ChatColor.GREEN + items.get(material) + "%"));
 
         getInventory().setItem(10, Util.setName(add, "&7Add &a[+5.0%]"));
         getInventory().setItem(11, Util.setName(add, "&7Add &a[+1.0%]"));
@@ -82,7 +85,7 @@ public class ProbabilityMenu extends MenuBuilder {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
 
-        float chance = generator.getItems().get(material.name());
+        float chance = items.get(material);
 
         Player player = (Player) event.getWhoClicked();
 
@@ -108,7 +111,7 @@ public class ProbabilityMenu extends MenuBuilder {
             return;
         }
 
-        generator.getItems().put(material.name(), chance);
+        items.put(material, chance);
 
         // Save new probability into config
         plugin.getMaterialsConfig().save();
@@ -120,8 +123,8 @@ public class ProbabilityMenu extends MenuBuilder {
 
     private float getPercent() {
         float percent = 0;
-        for (Map.Entry<String, Float> entry : generator.getItems().entrySet()) {
-            if (entry.getKey().equals(material.name())) continue;
+        for (Map.Entry<XMaterial, Float> entry : items.entrySet()) {
+            if (entry.getKey().equals(material)) continue;
             percent += entry.getValue();
         }
         return percent;

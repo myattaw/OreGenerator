@@ -1,8 +1,7 @@
 package com.reliableplugins.oregenerator.hook;
 
 import com.reliableplugins.oregenerator.OreGenerator;
-import com.reliableplugins.oregenerator.hook.impl.SkyblockHook;
-import com.reliableplugins.oregenerator.hook.impl.skyblock.ASkyblockHook;
+import com.reliableplugins.oregenerator.hook.impl.VaultHook;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,7 @@ public class HookManager {
 
     public HookManager(OreGenerator plugin) {
         this.plugin = plugin;
-        hookPlugin(new ASkyblockHook());
+        hookPlugin(new VaultHook());
     }
 
     private void hookPlugin(PluginHook pluginHook) {
@@ -26,12 +25,8 @@ public class HookManager {
         }
     }
 
-    public SkyblockHook getSkyBlock() {
-        if (pluginMap.containsKey("skyblock")) {
-            return (SkyblockHook) pluginMap.get("skyblock");
-        }
-        return null;
+    public VaultHook getVault() {
+        return (VaultHook) pluginMap.get("vault");
     }
-
 
 }

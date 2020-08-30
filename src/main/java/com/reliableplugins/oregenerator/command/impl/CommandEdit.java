@@ -18,13 +18,12 @@ public class CommandEdit extends AbstractCommand {
         Generator generator;
 
         if (args.length != 0) {
-
             // If arg is a valid generator, open its menu
             if (getPlugin().getGenerators().containsKey(args[0].toLowerCase())) {
                 generator = getPlugin().getGenerators().get(args[0]);
 
-                int rows = (int) (1 + Math.ceil((generator.getItems().size() - 1) / 9));
-                getPlugin().setGeneratorMenu(generator, new GeneratorMenu(getPlugin(), generator, rows).init());
+                int rows = (int) (1 + Math.ceil((generator.getFirst().getItems().size() - 1) / 9));
+//                getPlugin().setGeneratorMenu(generator, new GeneratorMenu(getPlugin(), generator, rows).init());
 
             // If arg isn't a valid generator, throw error
             } else {

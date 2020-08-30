@@ -17,21 +17,21 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 public class BlockEditorMenu extends MenuBuilder {
 
-    private String name;
     private OreGenerator plugin;
     private List<String> lore = new ArrayList<>();
 
     private Generator generator;
+    private Map<XMaterial, Float> items;
 
-    public BlockEditorMenu(String name, int rows, OreGenerator plugin) {
+    public BlockEditorMenu(Generator generator, Map<XMaterial, Float> items, int rows, OreGenerator plugin) {
         super("Remove or add blocks", rows, plugin);
-        this.name = name;
+        this.generator = generator;
+        this.items = items;
         this.plugin = plugin;
-        this.generator = plugin.getGenerators().get(name);
         lore.add(ChatColor.GRAY + "[" + ChatColor.GREEN + (ChatColor.BOLD + "+") + ChatColor.GRAY + "]" + ChatColor.ITALIC + " Add an item to a generator by clicking");
         lore.add(ChatColor.GRAY + "a material from your inventory.");
         lore.add("");
@@ -54,8 +54,8 @@ public class BlockEditorMenu extends MenuBuilder {
         }
 
         int slot = ROW_SIZE;
-        for (String material : generator.getItems().keySet()) {
-            ItemStack itemStack = XMaterial.valueOf(material).parseItem();
+        for (XMaterial material : items.keySet()) {
+            ItemStack itemStack = material.parseItem();
             Util.setLore(itemStack, lore);
             getInventory().setItem(slot++, Util.setName(itemStack, ChatColor.DARK_GREEN + plugin.getNMS().getItemName(itemStack)));
         }
@@ -86,23 +86,21 @@ public class BlockEditorMenu extends MenuBuilder {
         }
 
         Inventory inventory = event.getClickedInventory();
-        Generator generator = plugin.getGenerators().get(name);
         ItemStack itemStack = event.getCurrentItem();
-
-        XMaterial xMaterial = XMaterial.matchXMaterial(itemStack);
 
         if (itemStack == null || inventory == null) return;
 
+        XMaterial xMaterial = XMaterial.matchXMaterial(itemStack);
+
         if (inventory == player.getInventory()) {
 
-            if (!generator.getItems().containsKey(xMaterial) && itemStack.getType().isSolid()) {
-                //TODO: add item by data
-                generator.addItem(xMaterial, 0);
+            if (!items.containsKey(xMaterial) && itemStack.getType().isSolid()) {
+                items.put(xMaterial, 0F);
                 init();
             }
         } else {
-            if (generator.getItems().containsKey(xMaterial.name())) {
-                generator.removeItem(xMaterial);
+            if (items.containsKey(xMaterial)) {
+                items.remove(xMaterial);
                 init();
             }
         }
