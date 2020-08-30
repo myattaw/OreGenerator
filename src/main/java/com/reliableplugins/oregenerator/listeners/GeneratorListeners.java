@@ -2,6 +2,7 @@ package com.reliableplugins.oregenerator.listeners;
 
 import com.reliableplugins.oregenerator.OreGenerator;
 import com.reliableplugins.oregenerator.generator.Generator;
+import com.reliableplugins.oregenerator.menu.impl.player.SelectorMenu;
 import com.reliableplugins.oregenerator.util.XMaterial;
 import com.reliableplugins.oregenerator.util.pair.Pair;
 import org.bukkit.Bukkit;
@@ -14,8 +15,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.*;
 
@@ -66,6 +69,26 @@ public class GeneratorListeners implements Listener {
             }
         }
 
+    }
+
+    @EventHandler
+    public void onBlockInteract(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+            Block block = event.getClickedBlock();
+            Player player = event.getPlayer();
+
+            if (isCobbleGenerator(XMaterial.matchXMaterial(block.getType()), block)) {
+                List<Pair<Generator, Integer>> generators = plugin.getPlayerCache().getGenerators(player);
+
+                if (generators == null || generators.size() != plugin.getGenerators().values().size()) {
+                    plugin.getPlayerCache().addPlayer(player);
+                }
+
+                int rows = (int) (1 + Math.ceil((plugin.getPlayerCache().getGenerators(player).size() - 1) / 9));
+                player.openInventory(new SelectorMenu(player, rows + 2, plugin).init().getInventory());
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
