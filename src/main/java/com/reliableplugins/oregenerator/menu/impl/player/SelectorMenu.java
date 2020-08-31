@@ -89,36 +89,55 @@ public class SelectorMenu extends MenuBuilder {
 
             List<String> lore = new ArrayList<>();
 
-            if (level > playerLevel) {
-                lore.add(Util.color(""));
-                lore.add(Util.color("&6&lAVAILABLE"));
-                lore.add(Util.color("&e&l➥ &6Cost: &e$100,000"));
-            }
+//            if (level > playerLevel) {
+//                lore.add(Util.color(""));
+//                lore.add(Util.color("&6&lAVAILABLE"));
+//                lore.add(Util.color("&e&l➥ &6Cost: &e$100,000"));
+//            }
 
-            lore.add(Util.color(""));
-            lore.add(Util.color("&2&lPERCENTAGES"));
-
-            for (Map.Entry<XMaterial, Float> items : generator.getByLevel(level).getItems().entrySet()) {
-                if (items.getValue() == 0) continue;
-
-                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(items.getKey().parseItem()) + ":&7 " + items.getValue().floatValue() + "%"));
-            }
+//            for (Map.Entry<XMaterial, Float> items : generator.getByLevel(level).getItems().entrySet()) {
+//                if (items.getValue() == 0) continue;
+//                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(items.getKey().parseItem()) + ":&7 " + items.getValue().floatValue() + "%"));
+//            }
 
             Pair<Generator, Integer> generatorLevel = plugin.getPlayerCache().getSelected(player);
 
+            ItemStack itemStack;
+            String name = Util.replace(plugin.getConfig().getString("select-menu.item-name"), Pair.of("name", generator.getName().toUpperCase()), Pair.of("level", Util.intToRoman(level)));
+            String status;
+
             if (generatorLevel.getKey() == generator && generatorLevel.getValue() == level) {
-                getInventory().setItem(generators.getKey(), Util.setLore(Util.setName(new ItemStack(material), ENABLED + generator.getName().toUpperCase() + " &7(Selected)"), lore));
+                itemStack = Util.setName(new ItemStack(material), name);
+                status = plugin.getConfig().getString("select-menu.status.selected");
             } else if (level <= playerLevel || level == DEFAULT_LEVEL) {
-                getInventory().setItem(generators.getKey(), Util.setLore(Util.setName(enabled, ENABLED + generator.getName().toUpperCase()), lore));
+                itemStack = Util.setName(enabled, name);
+                status = plugin.getConfig().getString("select-menu.status.disabled");
             } else {
-                getInventory().setItem(generators.getKey(), Util.setLore(Util.setName(disabled, "&e&lCLICK TO &nUNLOCKED"), lore));
+                itemStack = Util.setName(disabled, name);
+                status = plugin.getConfig().getString("select-menu.status.locked");
             }
+
+            for (String line : plugin.getConfig().getStringList("select-menu.item-lore")) {
+                if (line.contains("[ITEMS]")) {
+                    for (Map.Entry<XMaterial, Float> items : generator.getByLevel(level).getItems().entrySet()) {
+                        if (items.getValue() == 0) continue;
+                        lore.add(Util.replace(plugin.getConfig().getString("select-menu.item-line"), Pair.of("percent", items.getValue().floatValue()), Pair.of("block", plugin.getNMS().getItemName(items.getKey().parseItem()))));
+                    }
+                } else if (line.contains("[STATUS]")){
+                    lore.add(Util.replace(line, Pair.of("status", status)));
+                } else {
+                    lore.add(line);
+                }
+            }
+
+            getInventory().setItem(generators.getKey(), Util.setLore(itemStack, lore));
+
         }
 
         getInventory().setItem(getInventory().getSize() - MID_SLOT, Util.setName(new ItemStack(Material.BARRIER), ChatColor.DARK_RED + "Exit"));
 
-        getInventory().setItem(getInventory().getSize() - ROW_SIZE, getSkull("http://textures.minecraft.net/texture/bb0f6e8af46ac6faf88914191ab66f261d6726a7999c637cf2e4159fe1fc477"));
-        getInventory().setItem(getInventory().getSize() - 1, getSkull("http://textures.minecraft.net/texture/f2f3a2dfce0c3dab7ee10db385e5229f1a39534a8ba2646178e37c4fa93b"));
+//        getInventory().setItem(getInventory().getSize() - ROW_SIZE, getSkull("http://textures.minecraft.net/texture/bb0f6e8af46ac6faf88914191ab66f261d6726a7999c637cf2e4159fe1fc477"));
+//        getInventory().setItem(getInventory().getSize() - 1, getSkull("http://textures.minecraft.net/texture/f2f3a2dfce0c3dab7ee10db385e5229f1a39534a8ba2646178e37c4fa93b"));
 
         for (int i = ROW_SIZE; i < getInventory().getSize() - ROW_SIZE; i++) {
             if (getInventory().getItem(i) == null) {
@@ -159,7 +178,8 @@ public class SelectorMenu extends MenuBuilder {
                 if (generator.getValue() == playerLevel + DEFAULT_LEVEL) {
 
                     if (plugin.getHookManager().getVault().canAfford(player, cost)) {
-                        player.openInventory(new ConfirmMenu("Test", this, plugin, generator.getKey(), generator.getValue(), cost).init().getInventory());
+                        String title = Util.replace(Message.UPGRADE_CONFIRM_TITLE.getText(), Pair.of("cost", cost));
+                        player.openInventory(new ConfirmMenu(title, this, plugin, generator.getKey(), generator.getValue(), cost).init().getInventory());
                     } else {
                         player.sendMessage(Message.ERROR_NOT_ENOUGH_MONEY.getMessage());
                     }

@@ -1,11 +1,14 @@
 package com.reliableplugins.oregenerator.util;
 
+import com.reliableplugins.oregenerator.util.pair.Pair;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Util {
@@ -25,10 +28,10 @@ public class Util {
     }
 
 
-    public static List<String> updateLore(List<String> lore, Map.Entry<String, Object>... placeholders) {
+    public static List<String> updateLore(List<String> lore, Pair<String, Object>... placeholders) {
         List<String> newLore = new ArrayList<>();
         for (String line : lore) {
-            for (Map.Entry<String, Object> placeholder : placeholders) {
+            for (Pair<String, Object> placeholder : placeholders) {
                 if (line.toUpperCase().contains(placeholder.getKey().toUpperCase())) {
                     line = line.replace(String.format("[%s]", placeholder.getKey().toUpperCase()), String.valueOf(placeholder.getValue()));
                 }
@@ -38,9 +41,13 @@ public class Util {
         return newLore;
     }
 
-    public static String replace(String string, Map.Entry<String, Object>... replacements) {
-        for (Map.Entry<String, Object> entry : replacements) {
-            string = string.replace(String.format("[%s]", entry.getKey().toUpperCase()), String.valueOf(entry.getValue()).toUpperCase());
+    public static String replace(String string, Pair<String, Object>... replacements) {
+        for (Pair<String, Object> entry : replacements) {
+            if (entry.getValue() instanceof Number) {
+                string = string.replace(String.format("[%s]", entry.getKey().toUpperCase()), NumberFormat.getNumberInstance(Locale.US).format(entry.getValue()));
+            } else {
+                string = string.replace(String.format("[%s]", entry.getKey().toUpperCase()), String.valueOf(entry.getValue()));
+            }
         }
         return string;
     }

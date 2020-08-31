@@ -6,6 +6,7 @@ import com.reliableplugins.oregenerator.generator.GeneratorItems;
 import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import com.reliableplugins.oregenerator.util.pair.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -58,12 +59,12 @@ public class MainMenu extends MenuBuilder {
                     }
                 }
 
-                String itemName = Util.replace(plugin.getConfig().getString("main-menu.generator.name"), new AbstractMap.SimpleEntry<>("name", generator.getName()), new AbstractMap.SimpleEntry<>("level", Util.intToRoman(level)));
+                String itemName = Util.replace(plugin.getConfig().getString("main-menu.generator.name"), Pair.of("name", generator.getName()), Pair.of("level", Util.intToRoman(level)));
                 ItemStack itemStack = Util.setName(new ItemStack(material), itemName);
 
                 List<String> lore = plugin.getConfig().getStringList("main-menu.generator.lore");
                 slotItems.put(slot, generator.getByLevel(level).getItems());
-                getInventory().setItem(slot++, Util.setLore(itemStack, Util.updateLore(lore, new AbstractMap.SimpleEntry<>("max", generator.getMaxLevel()), new AbstractMap.SimpleEntry<>("name", generator.getName()))));
+                getInventory().setItem(slot++, Util.setLore(itemStack, Util.updateLore(lore, Pair.of("max", generator.getMaxLevel()), Pair.of("name", generator.getName()))));
             }
 
         }

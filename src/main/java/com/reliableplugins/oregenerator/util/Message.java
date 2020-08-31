@@ -13,8 +13,10 @@ public enum Message {
     SELECT_ERROR(Util.color("&cYou do not have permission to use this generator")),
     SELECT_GENERATOR(Util.color("&aYou have selected the %s generator")),
 
+    UPGRADE_CONFIRM_TITLE(Util.color("&4&lPURCHASE FOR $[COST]")),
     UPGRADE_PREVIOUS(Util.color("&cYou must unlock the previous level.")),
-    UPGRADE_PURCHASED(Util.color("You have purchased &a[NAME]&f upgrade for &a$[COST]")),
+    UPGRADE_CANCELLED(Util.color("&cYou have cancelled your upgrade.")),
+    UPGRADE_PURCHASED(Util.color("Purchased &a[NAME]&f upgrade for &a$[COST]")),
 
     LEVEL_WRONG_ARGS(Util.color("&cInvalid usage; /oregen level <add|rem> <name>")),
     LEVEL_ADD(Util.color("&aYou have added a new generator for %s!")),
@@ -42,6 +44,10 @@ public enum Message {
 
     Message(String text) {
         this.text = text;
+    }
+
+    public String getText() {
+        return text;
     }
 
     public String getMessage() {

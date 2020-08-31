@@ -7,6 +7,7 @@ import com.reliableplugins.oregenerator.menu.MenuBuilder;
 import com.reliableplugins.oregenerator.util.Message;
 import com.reliableplugins.oregenerator.util.Util;
 import com.reliableplugins.oregenerator.util.XMaterial;
+import com.reliableplugins.oregenerator.util.pair.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -53,13 +54,14 @@ public class ConfirmMenu extends MenuBuilder {
         Player player = (Player) event.getWhoClicked();
         if (Ints.contains(LEFT_SIDE, event.getSlot())) {
             getPlugin().getHookManager().getVault().withdrawPlayer(player, cost);
-            player.sendMessage(Util.replace(Message.UPGRADE_PURCHASED.getMessage(), new AbstractMap.SimpleEntry<>("cost", cost), new AbstractMap.SimpleEntry<>("name", generator.getName())));
+            player.sendMessage(Util.replace(Message.UPGRADE_PURCHASED.getMessage(), Pair.of("cost", cost), Pair.of("name", generator.getName())));
             getPlugin().getPlayerCache().addLevel(player, generator, level);
             getPlugin().getFileManager().getUserData().saveConfig();
             player.closeInventory();
             menuBuilder.init();
         } else if (Ints.contains(RIGHT_SIDE, event.getSlot())) {
             player.closeInventory();
+            player.sendMessage(Message.UPGRADE_CANCELLED.getMessage());
         }
     }
 

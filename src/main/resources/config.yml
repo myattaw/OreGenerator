@@ -16,9 +16,19 @@ main-menu:
       - "&7oregenerator.use.[NAME]"
 
 select-menu:
-  selected: "&a&l[NAME] &7(Selected)"
-  disabled: "&c&l[NAME]"
-  locked: "&e&lCLICK TO &nUNLOCK"
+  item-name: "&a&l[NAME] &7(Level [LEVEL])"
+  item-line: "&a[BLOCK] &f\u00bb &7([PERCENT]%)"
+  status:
+    locked: "&7[&6&lCLICK TO &nUNLOCKED&7]"
+    disabled: "&aStatus &f\u00bb &7[&c&lDISABLED&7]"
+    selected: "&aStatus &f\u00bb &7[&a&lSELECTED&7]"
+  item-lore:
+    - "&7(click to select this)"
+    - ""
+    - "&2&lPERCENTAGES"
+    - "[ITEMS]"
+    - ""
+    - "[STATUS]"
 
 level-cost:
   default:
