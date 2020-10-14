@@ -89,32 +89,21 @@ public class SelectorMenu extends MenuBuilder {
 
             List<String> lore = new ArrayList<>();
 
-//            if (level > playerLevel) {
-//                lore.add(Util.color(""));
-//                lore.add(Util.color("&6&lAVAILABLE"));
-//                lore.add(Util.color("&e&l➥ &6Cost: &e$100,000"));
-//            }
-
-//            for (Map.Entry<XMaterial, Float> items : generator.getByLevel(level).getItems().entrySet()) {
-//                if (items.getValue() == 0) continue;
-//                lore.add(Util.color("&a&l➥ &2" + plugin.getNMS().getItemName(items.getKey().parseItem()) + ":&7 " + items.getValue().floatValue() + "%"));
-//            }
-
             Pair<Generator, Integer> generatorLevel = plugin.getPlayerCache().getSelected(player);
 
             ItemStack itemStack;
             String name = Util.replace(plugin.getConfig().getString("select-menu.item-name"), Pair.of("name", generator.getName().toUpperCase()), Pair.of("level", Util.intToRoman(level)));
-            String status;
+            List<String> statusLore;
 
             if (generatorLevel.getKey() == generator && generatorLevel.getValue() == level) {
                 itemStack = Util.setName(new ItemStack(material), name);
-                status = plugin.getConfig().getString("select-menu.status.selected");
+                statusLore = plugin.getConfig().getStringList("select-menu.status.selected");
             } else if (level <= playerLevel || level == DEFAULT_LEVEL) {
                 itemStack = Util.setName(enabled, name);
-                status = plugin.getConfig().getString("select-menu.status.disabled");
+                statusLore = plugin.getConfig().getStringList("select-menu.status.disabled");
             } else {
                 itemStack = Util.setName(disabled, name);
-                status = plugin.getConfig().getString("select-menu.status.locked");
+                statusLore = plugin.getConfig().getStringList("select-menu.status.locked");
             }
 
             for (String line : plugin.getConfig().getStringList("select-menu.item-lore")) {
@@ -124,7 +113,10 @@ public class SelectorMenu extends MenuBuilder {
                         lore.add(Util.replace(plugin.getConfig().getString("select-menu.item-line"), Pair.of("percent", items.getValue().floatValue()), Pair.of("block", plugin.getNMS().getItemName(items.getKey().parseItem()))));
                     }
                 } else if (line.contains("[STATUS]")){
-                    lore.add(Util.replace(line, Pair.of("status", status)));
+                    int cost = plugin.getConfig().getInt(String.format("level-cost.%s.%d", generator.getName().toLowerCase(), level));
+                    for (String status : statusLore) {
+                        lore.add(Util.replace(status, Pair.of("cost", cost), Pair.of("status", status)));
+                    }
                 } else {
                     lore.add(line);
                 }

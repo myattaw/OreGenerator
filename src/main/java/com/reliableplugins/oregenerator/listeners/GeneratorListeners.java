@@ -41,7 +41,7 @@ public class GeneratorListeners implements Listener {
 
         if (block.getType() == Material.AIR || block.getType() == Material.COBBLESTONE || block.getType() == Material.STONE) {
 
-            if (!isCobbleGenerator(XMaterial.matchXMaterial(event.getBlock().getType()), block)) {
+            if (!isCobbleGenerator(XMaterial.matchXMaterial(event.getBlock().getType()), block, false)) {
                 return;
             }
 
@@ -78,7 +78,7 @@ public class GeneratorListeners implements Listener {
             Block block = event.getClickedBlock();
             Player player = event.getPlayer();
 
-            if (isCobbleGenerator(XMaterial.matchXMaterial(block.getType()), block)) {
+            if (isCobbleGenerator(XMaterial.matchXMaterial(block.getType()), block, true)) {
                 List<Pair<Generator, Integer>> generators = plugin.getPlayerCache().getGenerators(player);
 
                 if (generators == null || generators.size() != plugin.getGenerators().values().size()) {
@@ -118,11 +118,15 @@ public class GeneratorListeners implements Listener {
             BlockFace.WEST
     };
 
-    public boolean isCobbleGenerator(XMaterial type, Block block) {
+    public boolean isCobbleGenerator(XMaterial type, Block block, boolean checkOpposite) {
         XMaterial material = (type == XMaterial.WATER) ? XMaterial.LAVA : XMaterial.WATER;
+        XMaterial opposite = (type == XMaterial.WATER) ? XMaterial.WATER : XMaterial.LAVA;
         for (BlockFace face : faces) {
             Block relative = block.getRelative(face, 1);
             if (XMaterial.matchXMaterial(relative.getType()) == material) {
+                if (checkOpposite && !(XMaterial.matchXMaterial(block.getRelative(face.getOppositeFace(), 1).getType()) == opposite)) {
+                    return false;
+                }
                 return true;
             }
         }

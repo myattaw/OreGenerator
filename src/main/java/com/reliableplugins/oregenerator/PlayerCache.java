@@ -50,7 +50,7 @@ public class PlayerCache implements Listener {
             }
 
             if (!selected.containsKey(player.getUniqueId())) {
-                System.out.println("Needs to set default generator");
+//                System.out.println("Needs to set default generator");
 //                players.put(player.getUniqueId(), Pair.of(plugin.getGenerators().values().iterator().next(), 1));
             }
 
